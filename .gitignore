@@ -1,0 +1,9 @@
+_build
+blib
+Text-Markup-*
+MANIFEST
+MANIFEST.bak
+META.*
+Build
+MYMETA.*
+Makefile*
