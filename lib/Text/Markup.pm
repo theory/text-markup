@@ -7,15 +7,27 @@ use Carp;
 
 our $VERSION = '0.10';
 
-my %REGEX_FOR;
 my %PARSER_FOR;
+my %REGEX_FOR = (
+    markdown => qr{md|mkdn?|mdown|markdown},
+);
 
 sub register {
     my ($class, $name, $regex) = @_;
-    $class = caller;
+    my $pkg = caller;
     $REGEX_FOR{$name}  = $regex;
-    $PARSER_FOR{$name} = $class->can('parser')
-        or croak "No parser() function defind in $class";
+    $PARSER_FOR{$name} = $pkg->can('parser')
+        or croak "No parser() function defind in $pkg";
+}
+
+sub parser_for {
+    my ($self, $format) = @_;
+    return Text::Markup::None->can('parser') unless $format;
+    return $PARSER_FOR{$format} if $PARSER_FOR{$format};
+    my $pkg = __PACKAGE__ . '::' . ucfirst $format;
+    eval "require $pkg" or die $@;
+    return $PARSER_FOR{$format} = $pkg->can('parser')
+        or croak "No parser() function defind in $pkg";
 }
 
 sub formats {
@@ -31,6 +43,7 @@ sub parse {
     my $self = shift;
     my %p = @_;
     my $file = $p{file} or croak "No file parameter passed to parse()";
+    croak "$file does not exist" unless -e $file && !-d _;
 
     my $parser = $self->get_parser(\%p);
     return $parser->($file, $p{options});
@@ -45,9 +58,10 @@ sub default_format {
 sub get_parser {
     my ($self, $p) = @_;
     my $format = $p->{format}
-             || $self->guess_format($p->{file})
-             || $self->default_format || 'none';
-    return $PARSER_FOR{$format} || Text::Markup::None->can('parser');
+        || $self->guess_format($p->{file})
+        || $self->default_format;
+
+    return $self->parser_for($format);
 }
 
 sub guess_format {

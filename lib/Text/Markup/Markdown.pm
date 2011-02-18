@@ -7,8 +7,6 @@ use Text::Markdown ();
 
 our $VERSION = '0.10';
 
-Text::Markup->register(markdown => qr{md|mkdn?|mdown|markdown});
-
 sub parser {
     my ($file, $opts) = @_;
     my $md = Text::Markdown->new(@{ $opts || [] });

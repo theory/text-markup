@@ -3,8 +3,8 @@
 use strict;
 use warnings;
 use utf8;
-#use Test::More tests => 32;
-use Test::More 'no_plan';
+use Test::More tests => 23;
+#use Test::More 'no_plan';
 use HTML::Entities;
 
 BEGIN { use_ok 'Text::Markup' or die; }
@@ -18,8 +18,7 @@ can_ok 'Text::Markup' => qw(
     get_parser
 );
 
-is_deeply [Text::Markup->formats], [],
-    'Should be no registered parsers';
+is_deeply [Text::Markup->formats], [qw(markdown)], 'Should have core parsers';
 
 # Register one.
 PARSER: {
@@ -31,7 +30,7 @@ PARSER: {
     }
 }
 
-is_deeply [Text::Markup->formats], ['cool'],
+is_deeply [Text::Markup->formats], [qw(cool markdown)],
     'Should be now have the "cool" parser';
 
 my $parser = new_ok 'Text::Markup';
@@ -46,10 +45,7 @@ is $parser->get_parser({ format => 'cool' }), My::Cool::Parser->can('parser'),
 is $parser->get_parser({ file => 'foo' }), My::Cool::Parser->can('parser'),
     'Should be able to find default format parser';
 
-is $parser->get_parser({format => 'default'}), Text::Markup::None->can('parser'),
-    'Should be able to find the default parser';
-
-ok $parser->default_format('none'), 'Set the default format to "none"';
+$parser->default_format(undef);
 is $parser->get_parser({ file => 'foo'}), Text::Markup::None->can('parser'),
     'Should be find the specified default parser';
 
@@ -76,7 +72,7 @@ PARSER: {
     }
 }
 
-is_deeply [Text::Markup->formats], ['cool', 'funky'],
+is_deeply [Text::Markup->formats], [qw(cool funky markdown)],
     'Should be now have the "cool" and "funky" parsers';
 is $parser->guess_format('foo.cool'), 'cool',
     'Should still guess "cool" format file "foo.cool"';
