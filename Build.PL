@@ -12,7 +12,7 @@ Module::Build->new(
         'File::Spec::Functions' => 0,
         'Module::Build'         => '0.30',
         'Test::File'            => '1.08',
-        'Test::More'            => '0.88',
+        'Test::More'            => '0.96',
         'Test::Output'          => '0.11',
     },
     requires => {

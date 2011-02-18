@@ -1,0 +1,5 @@
+Markdown Test File
+==================
+
+This file tests the [Markdown](http://daringfireball.net/projects/markdown/)
+parser — which is powered by [Text::Markdown](http://p3rl/Text::Markdown).
