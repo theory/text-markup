@@ -25,7 +25,7 @@ while (my $data = <DATA>) {
         eval "use $req; 1;";
         plan skip_all => "$module not installed" if $@;
         plan tests => @exts + 7;
-        use_ok $module or die;
+        use_ok $module or next;
 
         push @loaded => $format;
         is_deeply [Text::Markup->formats], \@loaded,
