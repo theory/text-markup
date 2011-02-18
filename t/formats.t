@@ -3,9 +3,8 @@
 use strict;
 use warnings;
 use Test::More 0.96;
-use File::Spec::Functions qw(tmpdir catfile);
 use Text::Markup;
-use Test::File;
+use File::Spec::Functions qw(catfile);
 
 sub slurp($) {
     my $file = shift;
@@ -14,17 +13,15 @@ sub slurp($) {
     return <$fh>;
 }
 
-my (@loaded, @unlink);
-END { unlink $_ for @unlink };
-
+my @loaded;
 while (my $data = <DATA>) {
-    next if /^#/;
+    next if $data =~ /^#/;
     chomp $data;
     my ($format, $module, $req, @exts) = split /,/ => $data;
     subtest "Testing $format format" => sub {
         eval "use $req; 1;";
         plan skip_all => "$module not installed" if $@;
-        plan tests => @exts + 7;
+        plan tests => @exts + 4;
         use_ok $module or next;
 
         push @loaded => $format;
@@ -37,19 +34,10 @@ while (my $data = <DATA>) {
                 "Should guess that .$ext extension is $format";
         }
 
-        my $outfile = catfile tmpdir, "$format-$$.html";
-        push @unlink => $outfile;
-        file_not_exists_ok $outfile, "$format-$$.html should not yet exist";
-
-        ok $parser->parse(
-            from   => catfile('t', 'markups', "$format.txt"),
-            to     => $outfile,
+        is $parser->parse(
+            file   => catfile('t', 'markups', "$format.txt"),
             format => $format,
-        ), "Parse $format file";
-
-        file_exists_ok $outfile, "$format-$$.html should now exist";
-        is slurp $outfile, slurp catfile('t', 'html', "$format.html"),
-            "The $format-generated HTML should be correct"
+        ), slurp catfile('t', 'html', "$format.html"),"Parse $format file";
     }
 }
 

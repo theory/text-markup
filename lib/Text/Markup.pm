@@ -30,12 +30,10 @@ sub new {
 sub parse {
     my $self = shift;
     my %p = @_;
-    my $file = $p{from} or croak "No from parameter passed to parse()";
+    my $file = $p{file} or croak "No file parameter passed to parse()";
 
     my $parser = $self->get_parser(\%p);
-    my $fh = $self->output_handle_for($p{to});
-    print $fh $parser->($file, $p{options});
-    return $self;
+    return $parser->($file, $p{options});
 }
 
 sub default_format {
@@ -47,7 +45,7 @@ sub default_format {
 sub get_parser {
     my ($self, $p) = @_;
     my $format = $p->{format}
-             || $self->guess_format($p->{from})
+             || $self->guess_format($p->{file})
              || $self->default_format || 'none';
     return $PARSER_FOR{$format} || Text::Markup::None->can('parser');
 }
@@ -60,16 +58,6 @@ sub guess_format {
     return;
 }
 
-sub output_handle_for {
-    my ($self, $to) = @_;
-    if (!defined $to) {
-        binmode *STDOUT, ':utf8';
-        return *STDOUT;
-    }
-    open my $fh, '>:utf8', $to or die "Cannot open $to: $!\n";
-    return $fh;
-}
-
 1;
 __END__
 
@@ -79,13 +67,9 @@ Text::Markup - Parse text markup into HTML
 
 =head1 Synopsis
 
-  my $parser = Text::Markup->new(
-      default_format => 'markdown',
-      disallow => [qw(script)],
-      strip    => [qw(font)],
-  );
+  my $parser = Text::Markup->new(default_format => 'markdown');
 
-  $parser->parse(
+  my $html = $parser->parse(
       file   => $markup_file,
       format => 'markdown',
   );
@@ -100,11 +84,7 @@ Text::Markup - Parse text markup into HTML
 
 =head3 C<new>
 
-  my $parser = Text::Markup->new(
-      default_format => 'markdown',
-      disallow => [qw(script)],
-      strip    => [qw(font)],
-  );
+  my $parser = Text::Markup->new(default_format => 'markdown');
 
 Supported parameters:
 
@@ -121,23 +101,15 @@ guessed.
 
 =head3 C<parse>
 
-    $parser->parse(
-        file => $file_to_parse,
-        to   => $file_to_write_to,
-    );
+  my $html = $parser->parse(file => $file_to_parse);
 
-Parse a file and write the results to another file. Parameters:
+Parses a file and return the generated HTML. Supported parameters:
 
 =over
 
-=item C<from>
+=item C<file>
 
 The file from which to read the markup to be parsed.
-
-=item C<to>
-
-The file to which to write the output. If none is specified, the output will
-be written to C<STDOUT>.
 
 =item C<format>
 
@@ -162,6 +134,10 @@ various parser modules for details.
 
 The L<markup|https://github.com/github/markup> Ruby provides similar
 functionality, and is used to parse F<README.your_favorite_markup> on GitHub.
+
+=item *
+
+L<Markup::Unified> offers similar functionality.
 
 =back
 

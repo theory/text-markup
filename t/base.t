@@ -2,14 +2,10 @@
 
 use strict;
 use warnings;
-use File::Spec::Functions qw(catfile tmpdir);
-use Test::More tests => 32;
-#use Test::More 'no_plan';
-use Test::File;
-use Test::File::Contents;
-use Test::Output;
+use utf8;
+#use Test::More tests => 32;
+use Test::More 'no_plan';
 use HTML::Entities;
-use Encode;
 
 BEGIN { use_ok 'Text::Markup' or die; }
 
@@ -20,7 +16,6 @@ can_ok 'Text::Markup' => qw(
     parse
     default_format
     get_parser
-    output_handle_for
 );
 
 is_deeply [Text::Markup->formats], [],
@@ -48,28 +43,28 @@ is $parser->default_format, 'cool', 'Should have default format';
 is $parser->get_parser({ format => 'cool' }), My::Cool::Parser->can('parser'),
     'Should be able to find specific parser';
 
-is $parser->get_parser({ from => 'foo' }), My::Cool::Parser->can('parser'),
+is $parser->get_parser({ file => 'foo' }), My::Cool::Parser->can('parser'),
     'Should be able to find default format parser';
 
 is $parser->get_parser({format => 'default'}), Text::Markup::None->can('parser'),
     'Should be able to find the default parser';
 
 ok $parser->default_format('none'), 'Set the default format to "none"';
-is $parser->get_parser({ from => 'foo'}), Text::Markup::None->can('parser'),
+is $parser->get_parser({ file => 'foo'}), Text::Markup::None->can('parser'),
     'Should be find the specified default parser';
 
 # Now make it guess the format.
 $parser->default_format(undef);
-is $parser->get_parser({ from => 'foo.cool'}), My::Cool::Parser->can('parser'),
-    'Should be able to guess the parser from the file name';
+is $parser->get_parser({ file => 'foo.cool'}), My::Cool::Parser->can('parser'),
+    'Should be able to guess the parser file the file name';
 
 # Now test guess_format.
 is $parser->guess_format('foo.cool'), 'cool',
-    'Should guess "cool" format from "foo.cool"';
+    'Should guess "cool" format file "foo.cool"';
 is $parser->guess_format('foocool'), undef,
-    'Should not guess "cool" format from "foocool"';
+    'Should not guess "cool" format file "foocool"';
 is $parser->guess_format('foo.cool.txt'), undef,
-    'Should not guess "cool" format from "foo.cool.txt"';
+    'Should not guess "cool" format file "foo.cool.txt"';
 
 # Add another parser.
 PARSER: {
@@ -84,51 +79,30 @@ PARSER: {
 is_deeply [Text::Markup->formats], ['cool', 'funky'],
     'Should be now have the "cool" and "funky" parsers';
 is $parser->guess_format('foo.cool'), 'cool',
-    'Should still guess "cool" format from "foo.cool"';
+    'Should still guess "cool" format file "foo.cool"';
 is $parser->guess_format('foo.funky'), 'funky',
-    'Should guess "funky" format from "foo.funky"';
+    'Should guess "funky" format file "foo.funky"';
 is $parser->guess_format('foo.funky.txt'), 'funky',
-    'Should guess "funky" format from "foo.funky.txt"';
-
-# Test the output file handle method.
-is $parser->output_handle_for, *STDOUT,
-    'Default output handle should be STDOUT';
-
-# Test it with an actual file.
-my $outfile = catfile tmpdir, "text-xpath-t-base.t$$";
-END { unlink $outfile }
-
-file_not_exists_ok $outfile, 'Test file should not exist';
-ok my $fh = $parser->output_handle_for($outfile),
-    'Get file handle for output file';
-print $fh "hi there, $$";
-close $fh;
-file_exists_ok $outfile, 'Now we should have the output file';
-file_contents_is $outfile, "hi there, $$", 'And we should have written to it';
+    'Should guess "funky" format file "foo.funky.txt"';
 
 # Now try parsing.
-stdout_is { $parser->parse(
-    from   => 'README',
+is $parser->parse(
+    file   => 'README',
     format => 'cool',
-) } 'hello', 'Test the "cool" parser';
+), 'hello', 'Test the "cool" parser';
 
 # Send output to a file.
-ok $parser->parse(
-    from   => 'README',
-    to     => $outfile,
+is $parser->parse(
+    file   => 'README',
     format => 'funky',
-), 'Test the "funky" parser';
-
-# Data from Test::File::Contents is not decoded.
-file_contents_is $outfile, 'fünky',
-    'The parser output should have been written to the file.';
+), 'fünky', 'Test the "funky" parser';
 
 # Test opts to the parser.
-stdout_is { $parser->parse(
-    from    => 'README',
+is $parser->parse(
+    file    => 'README',
     format  => 'cool',
     options => ['goodbye'],
-) } 'goodbye', 'Test the "cool" parser with options';
+), 'goodbye', 'Test the "cool" parser with options';
 
 # Test the "none" parser.
 my $output = do {
@@ -137,9 +111,6 @@ my $output = do {
     '<pre>' . encode_entities(<$fh>) . '</pre>';
 };
 $parser->default_format(undef);
-ok $parser->parse(
-    from => __FILE__,
-    to   => $outfile,
-), 'Test the "none" parser';
-file_contents_is $outfile, encode_utf8($output),
-    'Its output should look as expected';
+is $parser->parse(
+    file => __FILE__,
+), $output, 'Test the "none" parser';
