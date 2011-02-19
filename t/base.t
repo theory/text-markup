@@ -29,7 +29,8 @@ while (readdir $dh) {
     push @core_parsers => lc;
 }
 
-is_deeply [Text::Markup->formats], [ sort @core_parsers], 'Should have core parsers';
+is_deeply [Text::Markup->formats], [ sort @core_parsers],
+    'Should have core parsers';
 
 # Register one.
 PARSER: {
@@ -62,7 +63,8 @@ is $parser->get_parser({ file => 'foo'}), Text::Markup::None->can('parser'),
 
 # Now make it guess the format.
 $parser->default_format(undef);
-is $parser->get_parser({ file => 'foo.cool'}), My::Cool::Parser->can('parser'),
+is $parser->get_parser({ file => 'foo.cool'}),
+    My::Cool::Parser->can('parser'),
     'Should be able to guess the parser file the file name';
 
 # Now test guess_format.
@@ -113,7 +115,8 @@ is $parser->parse(
 
 # Test the "none" parser.
 my $output = do {
-    open my $fh, '<:utf8', __FILE__ or die 'Cannot open ' . __FILE__ . ": $!\n";
+    my $f = __FILE__;
+    open my $fh, '<:utf8', $f or die "Cannot open $f: $!\n";
     local $/;
     '<pre>' . encode_entities(<$fh>) . '</pre>';
 };
