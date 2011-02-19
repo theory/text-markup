@@ -16,7 +16,7 @@ can_ok 'Text::Markup' => qw(
     new
     parse
     default_format
-    get_parser
+    _get_parser
 );
 
 # Find core parsers.
@@ -51,19 +51,19 @@ is $parser->default_format, undef, 'Should have no default format';
 $parser = new_ok 'Text::Markup', [default_format => 'cool'];
 is $parser->default_format, 'cool', 'Should have default format';
 
-is $parser->get_parser({ format => 'cool' }), My::Cool::Parser->can('parser'),
+is $parser->_get_parser({ format => 'cool' }), My::Cool::Parser->can('parser'),
     'Should be able to find specific parser';
 
-is $parser->get_parser({ file => 'foo' }), My::Cool::Parser->can('parser'),
+is $parser->_get_parser({ file => 'foo' }), My::Cool::Parser->can('parser'),
     'Should be able to find default format parser';
 
 $parser->default_format(undef);
-is $parser->get_parser({ file => 'foo'}), Text::Markup::None->can('parser'),
+is $parser->_get_parser({ file => 'foo'}), Text::Markup::None->can('parser'),
     'Should be find the specified default parser';
 
 # Now make it guess the format.
 $parser->default_format(undef);
-is $parser->get_parser({ file => 'foo.cool'}),
+is $parser->_get_parser({ file => 'foo.cool'}),
     My::Cool::Parser->can('parser'),
     'Should be able to guess the parser file the file name';
 

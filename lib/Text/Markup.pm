@@ -45,7 +45,7 @@ sub parse {
     my $file = $p{file} or croak "No file parameter passed to parse()";
     croak "$file does not exist" unless -e $file && !-d _;
 
-    my $parser = $self->get_parser(\%p);
+    my $parser = $self->_get_parser(\%p);
     return $parser->($file, $p{options});
 }
 
@@ -55,7 +55,7 @@ sub default_format {
     $self->{default_format} = shift;
 }
 
-sub get_parser {
+sub _get_parser {
     my ($self, $p) = @_;
     my $format = $p->{format}
         || $self->guess_format($p->{file})
@@ -137,6 +137,16 @@ guessed.
 
 =back
 
+=head2 Class Methods
+
+=head3 C<register>
+
+
+
+=head3 formats
+
+
+
 =head2 Instance Methods
 
 =head3 C<parse>
@@ -165,6 +175,21 @@ An array reference of options for the parser. See the documentation of the
 various parser modules for details.
 
 =back
+
+=head3 C<default_format>
+
+  my $format = $parser->default_format;
+  $parser->default_format('markdown');
+
+An accessor method to get and set the default format attribute.
+
+=head3 C<guess_format>
+
+  my $format = $parser->guess_format($filename);
+
+Compares the passed file name's suffix to the regular expressions of all
+registered formatting parser and returns the first one that matches. Returns
+C<undef> if none matches.
 
 =head1 Add a Parser
 
@@ -300,6 +325,17 @@ And finally, use the GitHub site to submit a pull request back to the upstream
 repository.
 
 =back
+
+If you don't want to submit your parser, you can still create and use one
+independently. Rather than add its information to the C<%REGEX_FOR> hash in
+this module, you can just load your parser manually, and have it call the
+C<register> method, like so:
+
+  use Text::Markup;
+  Text::Markup->register(foobar => qr{fb|foob(?:ar)?});
+
+This will be useful for creating private parsers you might not want to
+contribute, or that you'd want to distribute independently.
 
 =head1 See Also
 
