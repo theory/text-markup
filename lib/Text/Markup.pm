@@ -214,10 +214,10 @@ C<Text::FooBar> parser on CPAN, it might look something like this:
       return $md->parse(<$fh>);
   }
 
-It's important that the HTML be returned in Perl's internal string format.
-That is, C<utf8::is_utf8> should return true for the string it returns. It's
-up to the your parser to read the file in and get the encodings right. See
-L<perlunitut>, L<Encode>, L<utf8>, and L<PerlIO> for the gory details.
+Note that the return value should be properly encoded. Please include an
+L<encoding
+declaration|http://en.wikipedia.org/wiki/Character_encodings_in_HTML> in the
+return value.
 
 =item 5
 

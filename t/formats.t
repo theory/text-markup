@@ -8,7 +8,7 @@ use File::Spec::Functions qw(catfile);
 
 sub slurp($) {
     my $file = shift;
-    open my $fh, '<:encoding(utf-8)', $file or die "Cannot open $file: $!\n";
+    open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
     local $/;
     return <$fh>;
 }
