@@ -141,11 +141,19 @@ guessed.
 
 =head3 C<register>
 
+  Text::Markup->register(foobar => qr{fb|foob(?:ar)?});
 
+Registers a markup parser. You likely won't need to use this method unless
+you're creating a new markup parser and not contributing it back to the
+Text::Markup project. See </Add a Parser> for details.
 
 =head3 formats
 
+  my @formats = Text::Markup->formats;
 
+Returns a list of all of the formats currently recognized by Text::Markup.
+This will include all core parsers (except for "None") and any that have been
+loaded elsewhere and that call C<register> to register themselves.
 
 =head2 Instance Methods
 
