@@ -5,6 +5,7 @@ use warnings;
 use utf8;
 use Test::More tests => 23;
 #use Test::More 'no_plan';
+use File::Spec::Functions qw(catdir);
 use HTML::Entities;
 
 BEGIN { use_ok 'Text::Markup' or die; }
@@ -18,7 +19,17 @@ can_ok 'Text::Markup' => qw(
     get_parser
 );
 
-is_deeply [Text::Markup->formats], [qw(markdown)], 'Should have core parsers';
+# Find core parsers.
+my $dir = catdir qw(lib Text Markup);
+opendir my $dh, $dir or die "Cannot open diretory $dir: $!\n";
+my @core_parsers;
+while (readdir $dh) {
+    next if $_ eq '.' || $_ eq '..' || $_ eq 'None.pm';
+    s{[.]pm$}{};
+    push @core_parsers => lc;
+}
+
+is_deeply [Text::Markup->formats], [ sort @core_parsers], 'Should have core parsers';
 
 # Register one.
 PARSER: {
@@ -30,7 +41,7 @@ PARSER: {
     }
 }
 
-is_deeply [Text::Markup->formats], [qw(cool markdown)],
+is_deeply [Text::Markup->formats], [sort @core_parsers, 'cool'],
     'Should be now have the "cool" parser';
 
 my $parser = new_ok 'Text::Markup';
@@ -72,7 +83,7 @@ PARSER: {
     }
 }
 
-is_deeply [Text::Markup->formats], [qw(cool funky markdown)],
+is_deeply [Text::Markup->formats], [sort @core_parsers, qw(cool funky)],
     'Should be now have the "cool" and "funky" parsers';
 is $parser->guess_format('foo.cool'), 'cool',
     'Should still guess "cool" format file "foo.cool"';

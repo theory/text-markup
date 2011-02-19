@@ -13,7 +13,7 @@ sub slurp($) {
     return <$fh>;
 }
 
-my @loaded;
+my @loaded = Text::Markup->formats;
 while (my $data = <DATA>) {
     next if $data =~ /^#/;
     chomp $data;
@@ -24,7 +24,7 @@ while (my $data = <DATA>) {
         plan tests => @exts + 4;
         use_ok $module or next;
 
-        push @loaded => $format;
+        push @loaded => $format unless grep { $_ eq $format } @loaded;
         is_deeply [Text::Markup->formats], \@loaded,
             "$format should be loaded";
 
