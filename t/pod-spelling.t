@@ -12,3 +12,4 @@ __DATA__
 FooBar
 Trac
 lowercased
+UTF
