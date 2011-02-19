@@ -7,7 +7,7 @@ use Carp;
 
 our $VERSION = '0.10';
 
-my %PARSER_FOR;
+my %_PARSER_FOR;
 my %REGEX_FOR = (
     markdown => qr{md|mkdn?|mdown|markdown},
 );
@@ -16,17 +16,17 @@ sub register {
     my ($class, $name, $regex) = @_;
     my $pkg = caller;
     $REGEX_FOR{$name}  = $regex;
-    $PARSER_FOR{$name} = $pkg->can('parser')
+    $_PARSER_FOR{$name} = $pkg->can('parser')
         or croak "No parser() function defind in $pkg";
 }
 
-sub parser_for {
+sub _parser_for {
     my ($self, $format) = @_;
     return Text::Markup::None->can('parser') unless $format;
-    return $PARSER_FOR{$format} if $PARSER_FOR{$format};
+    return $_PARSER_FOR{$format} if $_PARSER_FOR{$format};
     my $pkg = __PACKAGE__ . '::' . ucfirst $format;
     eval "require $pkg" or die $@;
-    return $PARSER_FOR{$format} = $pkg->can('parser')
+    return $_PARSER_FOR{$format} = $pkg->can('parser')
         or croak "No parser() function defind in $pkg";
 }
 
@@ -61,7 +61,7 @@ sub _get_parser {
         || $self->guess_format($p->{file})
         || $self->default_format;
 
-    return $self->parser_for($format);
+    return $self->_parser_for($format);
 }
 
 sub guess_format {
