@@ -90,7 +90,33 @@ Text::Markup - Parse text markup into HTML
 
 =head1 Description
 
+This class is really simple. All it does is take the name of a file and return
+an HTML-formatted version of that file. The idea is that one might have files
+in lots of different markups, and not know or care what markups each uses.
+It's the job of this module to figure that out, parse it, and give you the
+resulting HTML.
 
+This distribution includes support for a number of markup formats:
+
+=over
+
+=item * L<HTML|http://whatwg.org/html>
+
+=item * L<Markdown|http://daringfireball.net/projects/markdown/>
+
+=item * L<Pod|perlpod>
+
+=item * L<Textile|http://textism.com/tools/textile/>
+
+=item * L<Trac|http://trac.edgewall.org/wiki/WikiFormatting>
+
+=back
+
+Adding support for more markup languages is straight-forward, and patches
+adding them to this distribution are also welcome. See L</Add a Parser> for
+step-by-step instructions.
+
+Or if you just want to use this module, then read on!
 
 =head1 Interface
 
@@ -137,6 +163,141 @@ entire file and wraps it in a C<< <pre> >> element.
 
 An array reference of options for the parser. See the documentation of the
 various parser modules for details.
+
+=back
+
+=head1 Add a Parser
+
+Adding support for markup formats not supported by the core Text::Markup
+distribution is a straight-forward exercise. Say you wanted to add a "FooBar"
+markup parser. Here are the steps to take:
+
+=over
+
+=item 1
+
+Fork L<this project on GitHub|https://github.com/theory/text-markup/>
+
+=item 2
+
+Clone your fork and create a new branch in which to work:
+
+  git clone git@github.com:username/text-markup.git
+  cd text-markup
+  git checkout -b foorbar
+
+=item 3
+
+Create a new module named C<Text::Markup::FooBar>. The simplest thing to do is
+copy an existing module and modify it. The HTML parser is probably the simplest:
+
+  cp lib/Text/Markup/HTML.pm lib/Text/Markup/FooBar.pm
+  perl -i -pe 's{HTML}{FooBar}g' lib/Text/Markup/FooBar.pm
+  perl -i -pe 's{html}{foobar}g' lib/Text/Markup/FooBar.pm
+
+=item 4
+
+Implement the C<parser> function in your new module. If you were to use the
+C<Text::FooBar> parser on CPAN, it might look something like this:
+
+  package Text::Markup::FooBar;
+
+  use 5.8.1;
+  use strict;
+  use Text::FooBar ();
+
+  sub parser {
+      my ($file, $opts) = @_;
+      my $md = Text::FooBar->new(@{ $opts || [] });
+      open my $fh, '<', $file or die "Cannot open $file: $!\n";
+      local $/;
+      return $md->parse(<$fh>);
+  }
+
+It's important that the HTML be returned in Perl's internal string format.
+That is, C<utf8::is_utf8> should return true for the string it returns. It's
+up to the your parser to read the file in and get the encodings right. See
+L<perlunitut>, L<Encode>, L<utf8>, and L<PerlIO> for the gory details.
+
+=item 5
+
+Edit F<lib/Text/Markup.pm> and add an entry to its C<%REGEX_FOR> hash for your
+new format. The key should be the name of the format (lowercase, the same as
+the last part of your module's name). The value should be a regular expression
+that matches the file extensions that suggest that a file is formatted in your
+parser's markup language. For our FooBar parser, the line might look like
+this:
+
+    foobar => qr{fb|foob(?:ar)?},
+
+=item 6
+
+Add a file in your parser's markup language to F<t/markups>. It should be
+named for your parser and end in F<.txt>, that is, F<t/markups/foobar.txt>.
+
+=item 7
+
+Add an HTML file, F<t/html/foobar.html>, which should be the expected output
+once F<t/markups/foobar.txt> is parsed into HTML. This will be used to test
+that your parser works correctly.
+
+=item 8
+
+Edit F<t/formats.t> by adding a line to its C<__DATA__> section. The line
+should be a comma-separated list describing your parser. The columns are:
+
+=over
+
+=item * Format
+
+The lowercased name of the format.
+
+=item * Format Module
+
+The name of the parser module.
+
+=item * Required Module
+
+The name of a module that's required to be installed in order for your parser
+to load.
+
+=item * Extensions
+
+Additional comma-separated values should be a list of file extensions that
+your parser should recognize.
+
+=back
+
+So for our FooBar parser, it might look like this:
+
+  markdown,Text::Markup::FooBar,Text::FooBar 0.22,fb,foob,foobar
+
+=item 9
+
+Test your new parser by running
+
+  prove -lv t/formats.t
+
+This will test I<all> included parsers, but of course you should only pay
+attention to how your parser works. Tweak until your tests pass.
+
+=item 10
+
+Don't forget to write the documentation in your new parser module! If you
+copied F<Text::Markup::HTML>, you can just modify as appropriate.
+
+=item 11
+
+Commit and push the branch to your fork on GitHub:
+
+  git add .
+  git commit -am 'Great new FooBar parser!'
+  git push -u origin foobar
+
+=item 12
+
+And finally, use the GitHub site to submit a pull request back to the upstream
+repository.
 
 =back
 
