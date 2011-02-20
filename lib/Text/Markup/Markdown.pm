@@ -38,10 +38,10 @@ Text::Markup::Markdown - Markdown parser for Text::Markup
 =head1 Description
 
 This is the L<Markdown|http://daringfireball.net/projects/markdown/> parser
-for L<Text::Mardown>. It reads in the file (it assumes that the file is
-UTF-8), hands it off to L<Text::Markdown> for parsing, and then returns the
-generated HTML as an encoded UTF-8 string with an C<http-equiv="Content-Type">
-element identifying the encoding as UTF-8.
+for L<Text::Markup>. It reads in the file (it assumes that the file is UTF-8),
+hands it off to L<Text::Markdown> for parsing, and then returns the generated
+HTML as an encoded UTF-8 string with an C<http-equiv="Content-Type"> element
+identifying the encoding as UTF-8.
 
 It recognizes files with the following extensions as Markdown:
 

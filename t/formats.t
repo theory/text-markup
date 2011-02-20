@@ -19,9 +19,10 @@ while (my $data = <DATA>) {
     chomp $data;
     my ($format, $module, $req, @exts) = split /,/ => $data;
     subtest "Testing $format format" => sub {
-        eval "use $req; 1;";
+        local $@;
+        eval "use $req; 1;" if $req;
         plan skip_all => "$module not installed" if $@;
-        plan tests => @exts + 4;
+        plan tests => @exts + 3;
         use_ok $module or next;
 
         push @loaded => $format unless grep { $_ eq $format } @loaded;
@@ -37,7 +38,7 @@ while (my $data = <DATA>) {
         is $parser->parse(
             file   => catfile('t', 'markups', "$format.txt"),
             format => $format,
-        ), slurp catfile('t', 'html', "$format.html"),"Parse $format file";
+        ), slurp catfile('t', 'html', "$format.html"), "Parse $format file";
     }
 }
 
@@ -46,3 +47,4 @@ done_testing;
 __DATA__
 # Format,Format Module,Required Module,extensions
 markdown,Text::Markup::Markdown,Text::Markdown 1.000004,md,mkdn,mkd,mdown,markdown
+html,Text::Markup::HTML,,html,htm,xhtml,xhtm

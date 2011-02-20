@@ -9,6 +9,7 @@ our $VERSION = '0.10';
 
 my %_PARSER_FOR;
 my %REGEX_FOR = (
+    html     => qr{x?html?},
     markdown => qr{md|mkdn?|mdown|markdown},
 );
 
@@ -24,7 +25,7 @@ sub _parser_for {
     my ($self, $format) = @_;
     return Text::Markup::None->can('parser') unless $format;
     return $_PARSER_FOR{$format} if $_PARSER_FOR{$format};
-    my $pkg = __PACKAGE__ . '::' . ucfirst $format;
+    my $pkg = __PACKAGE__ . '::' . $format eq 'html' ? 'HTML' : ucfirst $format;
     eval "require $pkg" or die $@;
     return $_PARSER_FOR{$format} = $pkg->can('parser')
         or croak "No parser() function defind in $pkg";
