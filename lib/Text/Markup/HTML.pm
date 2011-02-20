@@ -27,8 +27,9 @@ Text::Markup::HTML - HTML parse for Text::Markup
 =head1 Description
 
 This is the L<HTML|http://whatwg.org/html/> parser for L<Text::Markup>. All it
-does is read in the HTML file and return it as a string. It recognizes files
-with the following extensions as Markdown:
+does is read in the HTML file and return it as a string. It makes no
+assumptions about encoding, and returns the string raw as read from the file,
+with no decoding. It recognizes files with the following extensions as HTML:
 
 =over
 
