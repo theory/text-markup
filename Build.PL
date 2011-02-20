@@ -18,6 +18,7 @@ Module::Build->new(
     requires => {
         'perl'           => 5.008001,
         'HTML::Entities' => 0,
+        'File::BOM'      => '0.14',
     },
     recommends => {
         'Text::Markdown'      => '1.000004',

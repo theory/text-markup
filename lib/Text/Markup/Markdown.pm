@@ -2,6 +2,7 @@ package Text::Markup::Markdown;
 
 use 5.8.1;
 use strict;
+use File::BOM qw(open_bom);
 use Text::Markdown ();
 
 our $VERSION = '0.10';
@@ -9,7 +10,7 @@ our $VERSION = '0.10';
 sub parser {
     my ($file, $opts) = @_;
     my $md = Text::Markdown->new(@{ $opts || [] });
-    open my $fh, '<:encoding(UTF-8)', $file or die "Cannot open $file: $!\n";
+    open_bom my $fh, $file, ':utf8';
     local $/;
     my $html = $md->markdown(<$fh>);
     utf8::encode($html);
@@ -38,10 +39,11 @@ Text::Markup::Markdown - Markdown parser for Text::Markup
 =head1 Description
 
 This is the L<Markdown|http://daringfireball.net/projects/markdown/> parser
-for L<Text::Markup>. It reads in the file (it assumes that the file is UTF-8),
-hands it off to L<Text::Markdown> for parsing, and then returns the generated
-HTML as an encoded UTF-8 string with an C<http-equiv="Content-Type"> element
-identifying the encoding as UTF-8.
+for L<Text::Markup>. It reads in the file (relying on a
+L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM> and assuming UTF-8
+if there is none), hands it off to L<Text::Markdown> for parsing, and then
+returns the generated HTML as an encoded UTF-8 string with an
+C<http-equiv="Content-Type"> element identifying the encoding as UTF-8.
 
 It recognizes files with the following extensions as Markdown:
 

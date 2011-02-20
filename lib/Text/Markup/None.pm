@@ -3,12 +3,13 @@ package Text::Markup::None;
 use 5.8.1;
 use strict;
 use HTML::Entities;
+use File::BOM qw(open_bom);
 
 our $VERSION = '0.10';
 
 sub parser {
     my ($file, $opts) = @_;
-    open my $fh, '<:encoding(UTF-8)', $file or die "Cannot open $file: $!\n";
+    open_bom my $fh, $file, ':utf8';
     local $/;
     my $html = encode_entities(<$fh>);
     utf8::encode($html);
@@ -37,10 +38,11 @@ Text::Markup::None - Turn a file with no known markup into HTML
 =head1 Description
 
 This is the default parser used by Text::Markdown in the event that it cannot
-determine the format of a text file. All it does is read the file in (it
-assumes that the file is UTF-8), encodes all entities, and then returns an
-HTML string with the file in a C<< <pre> >> element. This will be handy for
-files that really are nothing but plain text, like F<README> files.
+determine the format of a text file. All it does is read the file in (relying
+on a L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM> and assuming
+UTF-8 if there is none), encodes all entities, and then returns an HTML string
+with the file in a C<< <pre> >> element. This will be handy for files that
+really are nothing but plain text, like F<README> files.
 
 =head1 Author
 
