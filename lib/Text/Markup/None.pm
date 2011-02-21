@@ -9,7 +9,7 @@ our $VERSION = '0.10';
 
 sub parser {
     my ($file, $opts) = @_;
-    open_bom my $fh, $file, ':utf8';
+    open_bom my $fh, $file, ':encoding(UTF-8)';
     local $/;
     my $html = encode_entities(<$fh>);
     utf8::encode($html);
