@@ -6,7 +6,7 @@ Module::Build->new(
     module_name        => 'Text::Markup',
     license            => 'perl',
     create_makefile_pl => 'traditional',
-    configure_requires => { 'Module::Build' => '0.30', },
+    configure_requires => { 'Module::Build' => '0.30' },
     build_requires     => {
         'File::Spec::Functions' => 0,
         'Module::Build'         => '0.30',

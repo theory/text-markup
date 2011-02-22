@@ -8,9 +8,9 @@ use Text::Markdown ();
 our $VERSION = '0.10';
 
 sub parser {
-    my ($file, $opts) = @_;
+    my ($file, $encoding, $opts) = @_;
     my $md = Text::Markdown->new(@{ $opts || [] });
-    open_bom my $fh, $file, ':encoding(UTF-8)';
+    open_bom my $fh, $file, ":encoding($encoding)";
     local $/;
     my $html = $md->markdown(<$fh>);
     utf8::encode($html);
@@ -40,10 +40,10 @@ Text::Markup::Markdown - Markdown parser for Text::Markup
 
 This is the L<Markdown|http://daringfireball.net/projects/markdown/> parser
 for L<Text::Markup>. It reads in the file (relying on a
-L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM> and assuming UTF-8
-if there is none), hands it off to L<Text::Markdown> for parsing, and then
-returns the generated HTML as an encoded UTF-8 string with an
-C<http-equiv="Content-Type"> element identifying the encoding as UTF-8.
+L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
+L<Text::Markdown> for parsing, and then returns the generated HTML as an
+encoded UTF-8 string with an C<http-equiv="Content-Type"> element identifying
+the encoding as UTF-8.
 
 It recognizes files with the following extensions as Markdown:
 
@@ -63,7 +63,9 @@ It recognizes files with the following extensions as Markdown:
 
 =head1 See Also
 
-L<National Funk Congress Deadlocked On Get Up/Get Down Issue|http://www.theonion.com/articles/national-funk-congress-deadlocked-on-get-upget-dow,625/>. MarkI<up> or MarkI<down>?
+L<National Funk Congress Deadlocked On Get Up/Get Down
+Issue|http://www.theonion.com/articles/national-funk-congress-deadlocked-on-get-upget-dow,625/>.
+MarkI<up> or MarkI<down>?
 
 =head1 Author
 

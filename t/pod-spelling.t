@@ -13,3 +13,4 @@ FooBar
 Trac
 lowercased
 UTF
+BOM

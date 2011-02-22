@@ -38,7 +38,7 @@ PARSER: {
     use Text::Markup;
     Text::Markup->register(cool => qr{cool});
     sub parser {
-        return $_[1] ? $_[1]->[0] : 'hello';
+        return $_[2] ? $_[2]->[0] : 'hello';
     }
 }
 

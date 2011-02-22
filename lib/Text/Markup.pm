@@ -37,7 +37,7 @@ sub formats {
 
 sub new {
     my $class = shift;
-    bless { @_ } => $class;
+    bless { default_encoding => 'UTF-8', @_ } => $class;
 }
 
 sub parse {
@@ -47,13 +47,23 @@ sub parse {
     croak "$file does not exist" unless -e $file && !-d _;
 
     my $parser = $self->_get_parser(\%p);
-    return $parser->($file, $p{options});
+    return $parser->(
+        $file,
+        $p{encoding} || $self->default_encoding,
+        $p{options}
+    );
 }
 
 sub default_format {
     my $self = shift;
     return $self->{default_format} unless @_;
     $self->{default_format} = shift;
+}
+
+sub default_encoding {
+    my $self = shift;
+    return $self->{default_encoding} unless @_;
+    $self->{default_encoding} = shift;
 }
 
 sub _get_parser {
@@ -136,6 +146,12 @@ Supported parameters:
 The default format to use if one isn't passed to C<parse()> and one can't be
 guessed.
 
+=item C<default_encoding>
+
+The character encoding in which to assume a file is encoded if it's not
+otherwise explicitly determined by examination of the source file. Defaults to
+"UTF-8".
+
 =back
 
 =head2 Class Methods
@@ -177,6 +193,13 @@ If not specified, Text::Markup will try to guess the format from the file's
 suffix. If it can't guess, it falls back on C<default_format>. And if that
 attribute is not set, it uses the C<none> parser, which simply encodes the
 entire file and wraps it in a C<< <pre> >> element.
+
+=item C<encoding>
+
+The character encoding to assume the source file is encoded in (if such cannot
+be determined by other means, such as a
+L<BOM|http://en.wikipedia.org/wiki/Byte_order_mark>. If not specified, the
+value of the C<default_encoding> attribute will be used.
 
 =item C<options>
 
@@ -239,19 +262,32 @@ C<Text::FooBar> parser on CPAN, it might look something like this:
   use 5.8.1;
   use strict;
   use Text::FooBar ();
+  use File::BOM qw(open_bom)
 
   sub parser {
-      my ($file, $opts) = @_;
+      my ($file, $encoding, $opts) = @_;
       my $md = Text::FooBar->new(@{ $opts || [] });
-      open my $fh, '<', $file or die "Cannot open $file: $!\n";
+      open_bom my $fh, $file, ":encoding($encoding)";
       local $/;
       return $md->parse(<$fh>);
   }
 
-Note that the return value should be properly encoded. Please include an
-L<encoding
-declaration|http://en.wikipedia.org/wiki/Character_encodings_in_HTML> in the
-return value.
+Use the C<$encoding> argument as appropriate to read in the source file. If
+your parser requires that text be decoded to Perl's internal form, use of
+L<File::BOM> is recommended, so that an explicit BOM will determine the
+encoding. Otherwise, fallback on the specified encoding. Note that some
+parsers, such as an HTML parser, would want text encoded before it parsed
+it. In such a case, read in the file as raw bytes:
+
+      open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
+
+The returned HTML, however, must be encoded. Please include an L<encoding
+declaration|http://en.wikipedia.org/wiki/Character_encodings_in_HTML>,
+such as a content-type C<< <meta> >> element:
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+This will allow any consumers of the returned HTML to parse it correctly.
 
 =item 5
 
