@@ -1,6 +1,6 @@
 = Trac Markup =
 
-This should contain ''Trac'' markup.
+This should contain ''Trac'' markup. Öy.
 
  * Item 1
    * Item 1.1
