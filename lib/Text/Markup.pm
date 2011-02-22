@@ -24,6 +24,7 @@ sub register {
 
 sub _parser_for {
     my ($self, $format) = @_;
+    return Text::Markup::None->can('parser') unless $format;
     return $_PARSER_FOR{$format} if $_PARSER_FOR{$format};
     my $pkg = __PACKAGE__ . '::' . ($format eq 'html' ? 'HTML' : ucfirst $format);
     eval "require $pkg; 1" or die $@;
