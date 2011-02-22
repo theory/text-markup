@@ -5,7 +5,7 @@ use strict;
 use File::BOM qw(open_bom);
 use Text::Textile '2.10';
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
