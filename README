@@ -1,8 +1,16 @@
 Text/Markup version 0.11
 ========================
 
-This library's module, Text-Markup, provides an single interface for parsing a
-large number of text markup formats and converting them to HTML.
+This library's module, Text::Markup, provides an single interface for parsing
+a large number of text markup formats and converting them to HTML. It
+currently supports the following markups:
+
+* [HTML](http://whatwg.org/html)
+* [Markdown](http://daringfireball.net/projects/markdown/)
+* [MediaWiki](http://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia)
+* [Pod](http://search.cpan.org/perldoc?perlpod)
+* [Textile](http://textism.com/tools/textile/)
+* [Trac](http://trac.edgewall.org/wiki/WikiFormatting)
 
 INSTALLATION
 
