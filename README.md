@@ -33,6 +33,15 @@ Dependencies
 
 Text-Markup requires the following modules:
 
+* File::BOM 0.14
+* HTML::Entities
+* perl 5.8.1
+* Pod::Simple::XHTML 3.15
+* Text::Markdown 1.000004
+* Text::MediawikiFormat 1.0
+* Text::Textile 2.10
+* Text::Trac 0.10
+
 * Text::Markdown 1.000004
 
 Copyright and Licence
