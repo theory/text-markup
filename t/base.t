@@ -96,19 +96,19 @@ is $parser->guess_format('foo.funky.txt'), 'funky',
 
 # Now try parsing.
 is $parser->parse(
-    file   => 'README',
+    file   => 'README.md',
     format => 'cool',
 ), 'hello', 'Test the "cool" parser';
 
 # Send output to a file.
 is $parser->parse(
-    file   => 'README',
+    file   => 'README.md',
     format => 'funky',
 ), 'fünky', 'Test the "funky" parser';
 
 # Test opts to the parser.
 is $parser->parse(
-    file    => 'README',
+    file    => 'README.md',
     format  => 'cool',
     options => ['goodbye'],
 ), 'goodbye', 'Test the "cool" parser with options';
