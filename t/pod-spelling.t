@@ -15,3 +15,4 @@ lowercased
 UTF
 BOM
 wiki
+MediaWiki

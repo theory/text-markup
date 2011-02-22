@@ -51,3 +51,4 @@ html,Text::Markup::HTML,,html,htm,xhtml,xhtm
 pod,Text::Markup::Pod,Pod::Simple::XHTML 3.15,pod,pm,pl
 trac,Text::Markup::Trac,Text::Trac 0.10,trac,trc
 textile,Text::Markup::Textile,Text::Textile 2.10,textile
+mediawiki,Text::Markup::Mediawiki,Text::MediawikiFormat 1.0,wiki,mwiki,mediawiki

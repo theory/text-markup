@@ -9,11 +9,12 @@ our $VERSION = '0.10';
 
 my %_PARSER_FOR;
 my %REGEX_FOR = (
-    html     => qr{x?html?},
-    markdown => qr{md|mkdn?|mdown|markdown},
-    pod      => qr{p(?:od|m|l)},
-    textile  => qr{textile},
-    trac     => qr{tra?c},
+    html      => qr{x?html?},
+    markdown  => qr{md|mkdn?|mdown|markdown},
+    pod       => qr{p(?:od|m|l)},
+    textile   => qr{textile},
+    trac      => qr{tra?c},
+    mediawiki => qr{(?:m(?:edia)?)?wiki},
 );
 
 sub register {
@@ -123,6 +124,8 @@ This distribution includes support for a number of markup formats:
 =item * L<Textile|http://textism.com/tools/textile/>
 
 =item * L<Trac|http://trac.edgewall.org/wiki/WikiFormatting>
+
+=item * L<MediaWiki|http://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia>
 
 =back
 
