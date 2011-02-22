@@ -13,10 +13,11 @@ Module::Build->new(
         'Test::More'            => '0.96',
     },
     requires => {
-        'File::BOM'      => '0.14',
-        'HTML::Entities' => 0,
-        'perl'           => 5.008001,
-        'Text::Markdown' => '1.000004',
+        'File::BOM'          => '0.14',
+        'HTML::Entities'     => 0,
+        'perl'               => 5.008001,
+        'Pod::Simple::XHTML' => '3.15',
+        'Text::Markdown'     => '1.000004',
     },
     recommends => {
         'Test::Pod'           => '1.41',

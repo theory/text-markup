@@ -22,7 +22,7 @@ while (my $data = <DATA>) {
         local $@;
         eval "use $req; 1;" if $req;
         plan skip_all => "$module not installed" if $@;
-        plan tests => @exts + 3;
+        plan tests => @exts + 4;
         use_ok $module or next;
 
         push @loaded => $format unless grep { $_ eq $format } @loaded;
@@ -48,3 +48,4 @@ __DATA__
 # Format,Format Module,Required Module,extensions
 markdown,Text::Markup::Markdown,Text::Markdown 1.000004,md,mkdn,mkd,mdown,markdown
 html,Text::Markup::HTML,,html,htm,xhtml,xhtm
+pod,Text::Markup::Pod,Pod::Simple::XHTML 3.15,pod,pm,pl

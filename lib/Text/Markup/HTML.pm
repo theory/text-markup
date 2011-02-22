@@ -17,12 +17,12 @@ __END__
 
 =head1 Name
 
-Text::Markup::HTML - HTML parse for Text::Markup
+Text::Markup::HTML - HTML parser for Text::Markup
 
 =head1 Synopsis
 
   use Text::Markup;
-  my $html = Text::Markup->new->parse(file => 'hellow.html');
+  my $html = Text::Markup->new->parse(file => 'hello.html');
 
 =head1 Description
 

@@ -11,6 +11,7 @@ my %_PARSER_FOR;
 my %REGEX_FOR = (
     html     => qr{x?html?},
     markdown => qr{md|mkdn?|mdown|markdown},
+    pod      => qr{p(?:od|m|l)},
 );
 
 sub register {
@@ -23,12 +24,11 @@ sub register {
 
 sub _parser_for {
     my ($self, $format) = @_;
-    return Text::Markup::None->can('parser') unless $format;
     return $_PARSER_FOR{$format} if $_PARSER_FOR{$format};
-    my $pkg = __PACKAGE__ . '::' . $format eq 'html' ? 'HTML' : ucfirst $format;
-    eval "require $pkg" or die $@;
+    my $pkg = __PACKAGE__ . '::' . ($format eq 'html' ? 'HTML' : ucfirst $format);
+    eval "require $pkg; 1" or die $@;
     return $_PARSER_FOR{$format} = $pkg->can('parser')
-        or croak "No parser() function defind in $pkg";
+        || croak "No parser() function defind in $pkg";
 }
 
 sub formats {
@@ -358,13 +358,17 @@ copied F<Text::Markup::HTML>, you can just modify as appropriate.
 
 =item 11
 
+Add any new module requirements to the C<requires> section of F<Build.PL>.
+
+=item 12
+
 Commit and push the branch to your fork on GitHub:
 
   git add .
   git commit -am 'Great new FooBar parser!'
   git push -u origin foobar
 
-=item 12
+=item 13
 
 And finally, use the GitHub site to submit a pull request back to the upstream
 repository.
