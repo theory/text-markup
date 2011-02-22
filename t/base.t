@@ -118,7 +118,7 @@ my $output = do {
     my $f = __FILE__;
     open my $fh, '<:utf8', $f or die "Cannot open $f: $!\n";
     local $/;
-    my $html = encode_entities(<$fh>);
+    my $html = encode_entities(<$fh>, '<>&"');
     utf8::encode($html);
     qq{<html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

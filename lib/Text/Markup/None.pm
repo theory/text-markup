@@ -11,7 +11,7 @@ sub parser {
     my ($file, $encoding, $opts) = @_;
     open_bom my $fh, $file, ":encoding($encoding)";
     local $/;
-    my $html = encode_entities(<$fh>);
+    my $html = encode_entities(<$fh>, '<>&"');
     utf8::encode($html);
     return qq{<html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
