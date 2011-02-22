@@ -1,4 +1,10 @@
 Revision history for Perl extension Text-Markup.
 
-0.10  
-      - Initial version.
+0.10  2011-02-22T19:45:27
+      - Initial version. Includes parsers for:
+        + HTML
+        + Markdown
+        + MediaWiki
+        + Pod
+        + Textile
+        + Trac
