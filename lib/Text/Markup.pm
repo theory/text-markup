@@ -96,12 +96,12 @@ Text::Markup - Parse text markup into HTML
 
 =head1 Synopsis
 
-  my $parser = Text::Markup->new(default_format => 'markdown');
-
-  my $html = $parser->parse(
-      file   => $markup_file,
-      format => 'markdown',
+  my $parser = Text::Markup->new(
+      default_format   => 'markdown',
+      default_encoding => 'UTF-8',
   );
+
+  my $html = $parser->parse(file => $markup_file);
 
 =head1 Description
 
@@ -119,13 +119,13 @@ This distribution includes support for a number of markup formats:
 
 =item * L<Markdown|http://daringfireball.net/projects/markdown/>
 
+=item * L<MediaWiki|http://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia>
+
 =item * L<Pod|perlpod>
 
 =item * L<Textile|http://textism.com/tools/textile/>
 
 =item * L<Trac|http://trac.edgewall.org/wiki/WikiFormatting>
-
-=item * L<MediaWiki|http://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia>
 
 =back
 
@@ -168,7 +168,7 @@ otherwise explicitly determined by examination of the source file. Defaults to
 
 Registers a markup parser. You likely won't need to use this method unless
 you're creating a new markup parser and not contributing it back to the
-Text::Markup project. See </Add a Parser> for details.
+Text::Markup project. See L</Add a Parser> for details.
 
 =head3 formats
 
@@ -204,8 +204,9 @@ entire file and wraps it in a C<< <pre> >> element.
 
 The character encoding to assume the source file is encoded in (if such cannot
 be determined by other means, such as a
-L<BOM|http://en.wikipedia.org/wiki/Byte_order_mark>. If not specified, the
-value of the C<default_encoding> attribute will be used.
+L<BOM|http://en.wikipedia.org/wiki/Byte_order_mark>). If not specified, the
+value of the C<default_encoding> attribute will be used, and if that attribute
+is not set, UTF-8 will be assumed.
 
 =item C<options>
 
@@ -219,7 +220,14 @@ various parser modules for details.
   my $format = $parser->default_format;
   $parser->default_format('markdown');
 
-An accessor method to get and set the default format attribute.
+An accessor for the default format attribute.
+
+=head3 C<default_encoding>
+
+  my $encoding = $parser->default_encoding;
+  $parser->default_encoding('Big5');
+
+An accessor for the default encoding attribute.
 
 =head3 C<guess_format>
 
@@ -260,8 +268,8 @@ copy an existing module and modify it. The HTML parser is probably the simplest:
 
 =item 4
 
-Implement the C<parser> function in your new module. If you were to use the
-C<Text::FooBar> parser on CPAN, it might look something like this:
+Implement the C<parser> function in your new module. If you were to use a
+C<Text::FooBar> module, it might look something like this:
 
   package Text::Markup::FooBar;
 
@@ -275,7 +283,16 @@ C<Text::FooBar> parser on CPAN, it might look something like this:
       my $md = Text::FooBar->new(@{ $opts || [] });
       open_bom my $fh, $file, ":encoding($encoding)";
       local $/;
-      return $md->parse(<$fh>);
+      my $html = $md->parse(<$fh>);
+      utf8::encode($html);
+      return join( "\n",
+          '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />',
+          '</head>',
+          '<body>',
+          $html,
+          '</body>',
+          '</html>',
+      );
   }
 
 Use the C<$encoding> argument as appropriate to read in the source file. If
@@ -371,13 +388,13 @@ Add any new module requirements to the C<requires> section of F<Build.PL>.
 Commit and push the branch to your fork on GitHub:
 
   git add .
-  git commit -am 'Great new FooBar parser!'
-  git push -u origin foobar
+  git commit -am 'Add great new FooBar parser!'
+  git push origin -u foobar
 
 =item 13
 
-And finally, use the GitHub site to submit a pull request back to the upstream
-repository.
+And finally, submit a pull request to the upstream repository via the GitHub
+UI.
 
 =back
 
@@ -386,6 +403,7 @@ independently. Rather than add its information to the C<%REGEX_FOR> hash in
 this module, you can just load your parser manually, and have it call the
 C<register> method, like so:
 
+  package My::Markup::FooBar;
   use Text::Markup;
   Text::Markup->register(foobar => qr{fb|foob(?:ar)?});
 
@@ -398,8 +416,9 @@ contribute, or that you'd want to distribute independently.
 
 =item *
 
-The L<markup|https://github.com/github/markup> Ruby provides similar
-functionality, and is used to parse F<README.your_favorite_markup> on GitHub.
+The L<markup|https://github.com/github/markup> Ruby library -- the inspiration
+for this module -- provides similar functionality, and is used to parse
+F<README.your_favorite_markup> on GitHub.
 
 =item *
 
