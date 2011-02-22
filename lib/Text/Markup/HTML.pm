@@ -6,7 +6,7 @@ use strict;
 our $VERSION = '0.10';
 
 sub parser {
-    my ($file, $opts) = @_;
+    my ($file, $encoding, $opts) = @_;
     open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
     local $/;
     return <$fh>;
