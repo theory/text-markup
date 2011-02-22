@@ -14,3 +14,4 @@ Trac
 lowercased
 UTF
 BOM
+wiki

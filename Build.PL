@@ -18,6 +18,7 @@ Module::Build->new(
         'perl'               => 5.008001,
         'Pod::Simple::XHTML' => '3.15',
         'Text::Markdown'     => '1.000004',
+        'Text::Trac'         => '0.10',
     },
     recommends => {
         'Test::Pod'           => '1.41',

@@ -49,3 +49,4 @@ __DATA__
 markdown,Text::Markup::Markdown,Text::Markdown 1.000004,md,mkdn,mkd,mdown,markdown
 html,Text::Markup::HTML,,html,htm,xhtml,xhtm
 pod,Text::Markup::Pod,Pod::Simple::XHTML 3.15,pod,pm,pl
+trac,Text::Markup::Trac,Text::Trac 0.10,trac,trc
