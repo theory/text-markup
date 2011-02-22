@@ -3,7 +3,7 @@ package Text::Markup::HTML;
 use 5.8.1;
 use strict;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;

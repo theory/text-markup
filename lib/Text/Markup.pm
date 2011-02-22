@@ -5,7 +5,7 @@ use strict;
 use Text::Markup::None;
 use Carp;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 my %_PARSER_FOR;
 my %REGEX_FOR = (
