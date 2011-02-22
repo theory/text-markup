@@ -12,6 +12,7 @@ my %REGEX_FOR = (
     html     => qr{x?html?},
     markdown => qr{md|mkdn?|mdown|markdown},
     pod      => qr{p(?:od|m|l)},
+    textile  => qr{textile},
     trac     => qr{tra?c},
 );
 
