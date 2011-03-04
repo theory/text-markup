@@ -42,8 +42,6 @@ Text-Markup requires the following modules:
 * Text::Textile 2.10
 * Text::Trac 0.10
 
-* Text::Markdown 1.000004
-
 Copyright and Licence
 ---------------------
 
