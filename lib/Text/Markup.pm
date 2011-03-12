@@ -190,7 +190,7 @@ Parses a file and return the generated HTML. Supported parameters:
 
 =item C<file>
 
-The file from which to read the markup to be parsed.
+The file from which to read the markup to be parsed. Required.
 
 =item C<format>
 
