@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.12
+0.12  2011-04-04T23:16:12
       - Documented that the `file` parameter to `parse()` is required.
       - Added MultiMarkdown support.
       - Fixed test failure in `t/formats.t` when no supported markup parser is

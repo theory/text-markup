@@ -29,7 +29,7 @@ while (my $f = readdir $dh) {
     push @core_parsers => lc $f;
 }
 
-is_deeply [Text::Markup->formats], [ sort @core_parsers],
+is_deeply [Text::Markup->formats], [sort @core_parsers],
     'Should have core parsers';
 
 # Register one.
