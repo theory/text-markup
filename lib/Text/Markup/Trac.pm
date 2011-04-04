@@ -5,7 +5,7 @@ use strict;
 use File::BOM qw(open_bom);
 use Text::Trac '0.10';
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
