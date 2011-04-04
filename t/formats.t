@@ -3,9 +3,12 @@
 use strict;
 use warnings;
 use Test::More 0.96;
-use Text::Markup;
 use File::Spec::Functions qw(catfile);
 use Carp;
+
+# Need to have at least one test outside subtests, in case no subtests are run
+# at all. So it might as well be this.
+BEGIN { use_ok 'Text::Markup' or die; }
 
 sub slurp($) {
     my $file = shift;
