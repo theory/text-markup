@@ -7,6 +7,7 @@ currently supports the following markups:
 
 * [HTML](http://whatwg.org/html)
 * [Markdown](http://daringfireball.net/projects/markdown/)
+* [MultiMarkdown](http://fletcherpenney.net/multimarkdown/)
 * [MediaWiki](http://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia)
 * [Pod](http://search.cpan.org/perldoc?perlpod)
 * [Textile](http://textism.com/tools/textile/)

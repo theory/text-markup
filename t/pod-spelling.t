@@ -16,3 +16,5 @@ UTF
 BOM
 wiki
 MediaWiki
+Markdown
+MultiMarkdown
