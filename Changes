@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.13
+0.13  2011-05-21T15:33:28
       - Fixed broken regular expression in the Pod parser that could eat the
         first line of a verbatim block.
 
