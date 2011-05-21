@@ -1,6 +1,8 @@
 Revision history for Perl extension Text-Markup.
 
 0.13
+      - Fixed broken regular expression in the Pod parser that could eat the
+        first line of a verbatim block.
 
 0.12  2011-04-04T23:16:12
       - Documented that the `file` parameter to `parse()` is required.

@@ -14,6 +14,7 @@ And now, for some Japanese.
 
 Now some verbatim text:
 
+  -- Provide a comment
   SELECT *
     FROM users
    WHERE nickname = 'theory';

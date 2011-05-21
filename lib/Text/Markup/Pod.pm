@@ -14,7 +14,7 @@ sub parser {
     my $p = Pod::Simple::XHTML->new;
     # Output everything as UTF-8.
     $p->html_header_tags('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />');
-    $p->strip_verbatim_indent(sub { (my $i = $_[0]->[0]) =~ s/S.*//; $i });
+    $p->strip_verbatim_indent(sub { (my $i = $_[0]->[0]) =~ s/\S.*//; $i });
     $p->output_string(\my $html);
     $p->parse_file($file);
     utf8::encode($html);
