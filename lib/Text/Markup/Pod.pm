@@ -18,7 +18,7 @@ sub parser {
     $p->output_string(\my $html);
     # Want user supplied options to override even these default behaviors, 
     # if necessary
-    my $opt = { @$opts };
+    my $opt = $opts ? { @$opts } : {};
     foreach my $method ( keys %$opt ) {
         my $v = $opt->{$method};
         $p->$method($v);
