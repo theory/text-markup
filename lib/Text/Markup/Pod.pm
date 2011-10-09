@@ -7,7 +7,7 @@ use Pod::Simple::XHTML '3.15';
 # Disable the use of HTML::Entities.
 $Pod::Simple::XHTML::HAS_HTML_ENTITIES = 0;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
