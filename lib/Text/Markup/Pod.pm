@@ -16,6 +16,13 @@ sub parser {
     $p->html_header_tags('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />');
     $p->strip_verbatim_indent(sub { (my $i = $_[0]->[0]) =~ s/\S.*//; $i });
     $p->output_string(\my $html);
+    # Want user supplied options to override even these default behaviors, 
+    # if necessary
+    my $opt = $opts ? { @$opts } : {};
+    foreach my $method ( keys %$opt ) {
+        my $v = $opt->{$method};
+        $p->$method($v);
+    }
     $p->parse_file($file);
     utf8::encode($html);
     return $html;
@@ -50,6 +57,25 @@ extensions as Pod:
 =item F<.pl>
 
 =back
+
+=head1 Options
+
+You may pass an arrayref of settings to this parser which changes the output returned.  For example,
+to suppress an HTML header and footer, pass:
+
+  my $pod_fragment = Text::Markup->new->parse(
+          file => 'README.pod',
+          options => [
+              html_header => '',
+              html_footer => '',
+          ]
+  );
+
+This implementation makes method calls to the L<Pod::Simple::XHTML> parser using the key as the method
+name and the value as the parameter list to pass.  
+
+See L<Pod::Simple::XHTML> and L<Pod::Simple> for the full list of options and inherited options
+which can be manipulated.
 
 =head1 Author
 
