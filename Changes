@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.14
+0.14  2011-10-09T17:45:28Z
       - Added option processing to the Pod parser. Thanks to Mark Allen for
         the pull request.
 
