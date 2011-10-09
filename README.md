@@ -1,4 +1,4 @@
-Text/Markup version 0.14
+Text/Markup version 0.15
 ========================
 
 This library's module, Text::Markup, provides an single interface for parsing
@@ -34,7 +34,7 @@ Dependencies
 
 Text-Markup requires the following modules:
 
-* File::BOM 0.14
+* File::BOM 0.15
 * HTML::Entities
 * perl 5.8.1
 * Pod::Simple::XHTML 3.15
