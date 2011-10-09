@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::More tests => 23;
+use Test::More tests => 25;
 #use Test::More 'no_plan';
 use File::Spec::Functions qw(catdir);
 use HTML::Entities;
@@ -112,6 +112,25 @@ is $parser->parse(
     format  => 'cool',
     options => ['goodbye'],
 ), 'goodbye', 'Test the "cool" parser with options';
+
+my $pod_dir = catdir (qw(t markups));
+
+like $parser->parse(
+        file => "$pod_dir/pod.txt",
+        format => "pod",
+        options => [
+            html_header => '',
+            ],
+        ), qr|</html>|, 'Test pod option to suppress HTML header';
+
+unlike $parser->parse(
+        file => "$pod_dir/pod.txt",
+        format => "pod",
+        options => [
+            html_header => '',
+            html_footer => '',
+            ],
+        ), qr|</html>|, 'Test pod options to suppress HTML header and footer';
 
 # Test the "none" parser.
 my $output = do {
