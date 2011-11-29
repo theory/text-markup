@@ -16,6 +16,7 @@ my %REGEX_FOR = (
     textile       => qr{textile},
     trac          => qr{tra?c},
     mediawiki     => qr{(?:m(?:edia)?)?wiki},
+    rest          => qr{re?st},
 );
 
 sub register {
