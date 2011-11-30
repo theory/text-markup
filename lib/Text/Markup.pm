@@ -127,6 +127,8 @@ This distribution includes support for a number of markup formats:
 
 =item * L<Pod|perlpod>
 
+=item * L<reStructuredText|http://docutils.sourceforge.net/docs/user/rst/quickref.html>
+
 =item * L<Textile|http://textism.com/tools/textile/>
 
 =item * L<Trac|http://trac.edgewall.org/wiki/WikiFormatting>

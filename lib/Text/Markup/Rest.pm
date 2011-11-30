@@ -31,10 +31,12 @@ Text::Markup::Rest - reStructuredText parser for Text::Markup
 
 =head1 Description
 
-This is the L<reStructuredText|http://docutils.sourceforge.net/rst.html> parser
-for L<Text::Markup>.  It uses the reference docutils implementation of the
-parser invoking rst2html to do the job.  It recognizes files with the following
-extensions as reST:
+This is the L<reStructuredText|http://docutils.sourceforge.net/docs/user/rst/quickref.html>
+parser for L<Text::Markup>.  It uses the reference docutils implementation of
+the parser invoking 'rst2html' to do the job, so it depends on the 'docutils'
+Python package (which can be found as 'python-docutils' in many Linux
+distribution, or installed using the command 'easy_install docutils').  It
+recognizes files with the following extensions as reST:
 
 =over
 
