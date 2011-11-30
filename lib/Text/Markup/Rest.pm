@@ -5,10 +5,14 @@ use strict;
 
 our $VERSION = '0.15';
 
+# Optional arguments to pass to rst2html
+our @OPTIONS = ('--no-raw', '--no-file-insertion',
+                '--stylesheet=', '--cloak-email-address');
+
 sub parser {
     my ($file, $encoding, $opts) = @_;
-    # TODO: stub: this implementation passes through
-    open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
+    open my $fh, "-|", "rst2html @OPTIONS $file",
+        or die "Cannot execute rst2html $file: $!\n";
     local $/;
     return <$fh>;
 }
