@@ -10,6 +10,7 @@ currently supports the following markups:
 * [MultiMarkdown](http://fletcherpenney.net/multimarkdown/)
 * [MediaWiki](http://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia)
 * [Pod](http://search.cpan.org/perldoc?perlpod)
+* [reStructuredText](http://docutils.sourceforge.net/docs/user/rst/quickref.html)
 * [Textile](http://textism.com/tools/textile/)
 * [Trac](http://trac.edgewall.org/wiki/WikiFormatting)
 
