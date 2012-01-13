@@ -7,9 +7,12 @@ our $VERSION = '0.15';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
-    open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
-    local $/;
-    return <$fh>;
+    my $html = do {
+        open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
+        local $/;
+        <$fh>;
+    };
+    return $html =~ /\S/ ? $html : undef
 }
 
 1;

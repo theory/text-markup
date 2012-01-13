@@ -16,7 +16,7 @@ sub parser {
     $p->html_header_tags('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />');
     $p->strip_verbatim_indent(sub { (my $i = $_[0]->[0]) =~ s/\S.*//; $i });
     $p->output_string(\my $html);
-    # Want user supplied options to override even these default behaviors, 
+    # Want user supplied options to override even these default behaviors,
     # if necessary
     my $opt = $opts ? { @$opts } : {};
     foreach my $method ( keys %$opt ) {
@@ -24,6 +24,7 @@ sub parser {
         $p->$method($v);
     }
     $p->parse_file($file);
+    return unless $p->content_seen;
     utf8::encode($html);
     return $html;
 }

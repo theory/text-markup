@@ -26,7 +26,7 @@ while (my $data = <DATA>) {
         local $@;
         eval "use $req; 1;" if $req;
         plan skip_all => "$module not installed" if $@;
-        plan tests => @exts + 4;
+        plan tests => @exts + 5;
         use_ok $module or next;
 
         push @loaded => $format unless grep { $_ eq $format } @loaded;
@@ -43,6 +43,12 @@ while (my $data = <DATA>) {
             file   => catfile('t', 'markups', "$format.txt"),
             format => $format,
         ), slurp catfile('t', 'html', "$format.html"), "Parse $format file";
+
+        is $parser->parse(
+            file   => catfile('t', 'empty.txt'),
+            format => $format,
+        ), undef, "Parse empty $format file";
+
     }
 }
 
