@@ -5,7 +5,7 @@ use strict;
 use File::Spec;
 use constant WIN32  => $^O eq 'MSWin32';
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 # Find rst2html (process stolen from App::Info).
 my $rst2html;
