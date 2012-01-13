@@ -20,3 +20,7 @@ Markdown
 MultiMarkdown
 UI
 GitHub
+Varrazzo
+reST
+reStructuredText
+docutils
