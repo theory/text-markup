@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.15
+0.15  2012-01-13T23:04:16Z
       - Changed the parsers to return `undef` if no content was parsed from a
         file.
       - Added reST support, with thanks to Daniele Varrazzo.
