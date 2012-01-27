@@ -14,7 +14,8 @@ currently supports the following markups:
 * [Textile](http://textism.com/tools/textile/)
 * [Trac](http://trac.edgewall.org/wiki/WikiFormatting)
 
-INSTALLATION
+Installation
+------------
 
 To install this module, type the following:
 
