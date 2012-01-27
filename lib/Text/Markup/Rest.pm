@@ -32,6 +32,8 @@ my @OPTIONS = qw(
     --stylesheet=
     --cloak-email-address
     --no-generator
+    --quiet
+    --strip-elements-with-class=system-message
 );
 
 sub parser {

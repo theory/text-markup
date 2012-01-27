@@ -1,6 +1,9 @@
 Revision history for Perl extension Text-Markup.
 
 0.16
+     - Rest support now running the `rst2html` script with `--quiet` and
+       `--strip-elements-with-class=system-message` to eliminat error output
+       for unknown directives, such as those often included for Sphinx.
 
 0.15  2012-01-13T23:04:16Z
       - Changed the parsers to return `undef` if no content was parsed from a
