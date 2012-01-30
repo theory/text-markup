@@ -1,7 +1,12 @@
 Revision history for Perl extension Text-Markup.
 
 0.16
-     - Rest support now running the `rst2html` script with `--quiet` and
+     - Rest support now uses its own implementation of `rst2html` so that it
+       can render specialized reST documents, such as Sphinx files, in a more
+       forgiving way: it preserves the content of unknown directives while not
+       emulating specialized rendering. Written by Daniele Varrazzo.
+
+ running the `rst2html` script with `--quiet` and
        `--strip-elements-with-class=system-message` to eliminat error output
        for unknown directives, such as those often included for Sphinx.
 

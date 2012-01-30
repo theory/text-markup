@@ -3,6 +3,7 @@ package Text::Markup::Rest;
 use 5.8.1;
 use strict;
 use File::Spec;
+use File::Basename ();
 use constant WIN32  => $^O eq 'MSWin32';
 
 our $VERSION = '0.16';
@@ -18,7 +19,14 @@ foreach my $p (File::Spec->path) {
         }
     }
 }
-unless ($rst2html) {
+
+if ($rst2html) {
+    # We have it, but use our custom version instead.
+    $rst2html = File::Spec->catfile(
+        File::Basename::dirname(__FILE__),
+        'rst2html_lenient.py'
+    );
+} else {
     use Carp;
     Carp::croak(
         'Cannot find rst2html.py in path ' . join ':', File::Spec->path
@@ -33,7 +41,6 @@ my @OPTIONS = qw(
     --cloak-email-address
     --no-generator
     --quiet
-    --strip-elements-with-class=system-message
 );
 
 sub parser {
@@ -93,12 +100,10 @@ Text::Markup::Rest - reStructuredText parser for Text::Markup
 
 This is the
 L<reStructuredText|http://docutils.sourceforge.net/docs/user/rst/quickref.html>
-parser for L<Text::Markup>. It uses the reference docutils implementation of
-the parser, invoking C<rst2html> (or C<rst2html.py> to do the job, so it
-depends on the C<docutils> Python package (which can be found as
-C<python-docutils> in many Linux distributions, or installed using the command
-C<easy_install docutils>). It recognizes files with the following extensions
-as reST:
+parser for L<Text::Markup>. It depends on the C<docutils> Python package
+(which can be found as C<python-docutils> in many Linux distributions, or
+installed using the command C<easy_install docutils>). It recognizes files
+with the following extensions as reST:
 
 =over
 

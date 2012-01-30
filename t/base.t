@@ -25,7 +25,7 @@ opendir my $dh, $dir or die "Cannot open diretory $dir: $!\n";
 my @core_parsers;
 while (my $f = readdir $dh) {
     next if $f eq '.' || $f eq '..' || $f eq 'None.pm';
-    $f =~ s{[.]pm$}{};
+    $f =~ s{[.]pm$}{} or next;
     push @core_parsers => lc $f;
 }
 

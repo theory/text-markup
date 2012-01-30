@@ -4,10 +4,16 @@ I am a reST document
 And I am its subtitle
 =====================
 
-.. toctree::
-
 Rest__ allows *inline* **style** and other stuff,
 but I guess this ``code`` is enough.
 
 .. __: http://docutils.sourceforge.net/
+
+.. unknown:: arg1 arg2
+    :option: foo
+
+    We also support unknown directive, so that no content is lost if reST
+    specialization is parsed.
+
+Of course we may also find :unknown:`new roles`.
 
