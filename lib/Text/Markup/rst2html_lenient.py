@@ -30,16 +30,31 @@ class AnyDirective(Directive):
     has_content = True
 
     def run(self):
+        if self.name in self.state.document.settings.dir_ignore:
+            return []
+
         children = []
-        children.append(nodes.strong(self.name, u"%s: " % self.name))
-        # keep the arguments, drop the options
-        for a in self.arguments:
-            if a.startswith(':') and a.endswith(':'):
-                break
-            children.append(nodes.emphasis(a, u"%s " % a))
-        content = u'\n'.join(self.content)
-        children.append(nodes.literal_block(content, content))
+
+        if self.name not in self.state.document.settings.dir_notitle:
+            children.append(nodes.strong(self.name, u"%s: " % self.name))
+            # keep the arguments, drop the options
+            for a in self.arguments:
+                if a.startswith(':') and a.endswith(':'):
+                    break
+                children.append(nodes.emphasis(a, u"%s " % a))
+
+        if self.name in self.state.document.settings.dir_nested:
+            if self.content:
+                container = nodes.Element()
+                self.state.nested_parse(self.content, self.content_offset,
+                                        container)
+                children.extend(container.children)
+        else:
+            content = u'\n'.join(self.content)
+            children.append(nodes.literal_block(content, content))
+
         node = any_directive(self.block_text, '', *children, dir_name=self.name)
+
         return [node]
 
 
@@ -143,7 +158,20 @@ class MyTranslator(HTMLTranslator):
 
 class LenientSettingsSpecs(SettingsSpec):
     settings_spec = ("Lenient parsing options", None, (
-        ('Verify that lenient customization works fine.  '
+        ("Directive whose content should be interpreted as reST.  "
+         "By default emit the content as unparsed text block.  "
+         "Can be specified more than once",
+            ["--dir-nested"],
+            {'metavar': 'NAME', 'default': [], 'action': 'append'}),
+        ("Directive that should produce no output.  "
+         "Can be specified more than once",
+            ["--dir-ignore"],
+            {'metavar': 'NAME', 'default': [], 'action': 'append'}),
+        ("Only emit the content of the directive, no title and options.  "
+         "Can be specified more than once",
+            ["--dir-notitle"],
+            {'metavar': 'NAME', 'default': [], 'action': 'append'}),
+        ("Verify that lenient customization works fine.  "
          "Immediately return with 0 (success) or 1 (error).  "
          "In case of error, print a report on stdout.",
             ['--test-patch'],
