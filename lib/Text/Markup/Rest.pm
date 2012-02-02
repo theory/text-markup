@@ -30,12 +30,35 @@ my @OPTIONS = qw(
     --cloak-email-address
     --no-generator
     --quiet
+    );
+
+# Options to improve rendering of Sphinx documents
+my @SPHINX_OPTIONS = qw(
+    --dir-ignore toctree
+    --dir-ignore highlight
+    --dir-ignore index
+    --dir-ignore default-domain
+
+    --dir-nested note
+    --dir-nested warning
+    --dir-nested versionadded
+    --dir-nested versionchanged
+    --dir-nested deprecated
+    --dir-nested seealso
+    --dir-nested hlist
+    --dir-nested glossary
+
+    --dir-notitle code-block
+
+    --dir-nested module
+    --dir-nested function
 );
+# note: domains directive (last 2 options) incomplete
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
     my $html = do {
-        my $fh = _fh($encoding, $rst2html, @OPTIONS, $file);
+        my $fh = _fh($encoding, $rst2html, @OPTIONS, @SPHINX_OPTIONS, $file);
         local $/;
         <$fh>;
     };

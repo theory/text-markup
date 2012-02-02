@@ -17,3 +17,21 @@ but I guess this ``code`` is enough.
 
 Of course we may also find :unknown:`new roles`.
 
+.. module:: mymodule
+
+    This is a module that doesn't *exist*
+
+    .. function:: foo()
+
+        In Sphinx documentation you could find this stuff.
+
+.. toctree::
+
+    we
+    dont
+    care
+
+.. code-block:: python
+
+    print "I have no title"
+
