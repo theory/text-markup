@@ -5,16 +5,20 @@ Parse a reST file into HTML in a very forgiving way.
 The script is meant to render specialized reST documents, such as Sphinx
 files, preserving the content, while not emulating the original rendering.
 
-The script is currently tested against docutils 0.7. Other version may break
-it as it deals with the parser at a relatively low level.
+The script is currently tested against docutils 0.7. Other versions may break
+it as it deals with the parser at a relatively low level. Use --test-patch to
+verify if the script works as expected with your library version.
 """
 
-from docutils import nodes, utils
-from docutils.core import publish_cmdline, default_description
+import sys
+
+import docutils
+from docutils import nodes, utils, SettingsSpec
+from docutils.core import publish_cmdline, publish_string, default_description
 from docutils.parsers.rst import Directive, directives, roles
 from docutils.writers.html4css1 import HTMLTranslator, Writer
 from docutils.parsers.rst.states import Body, Inliner
-
+from docutils.frontend import validate_boolean
 
 class any_directive(nodes.General, nodes.FixedTextElement):
     """A generic directive to deal with any unknown directive we may find."""
@@ -137,9 +141,17 @@ class MyTranslator(HTMLTranslator):
         self.body.append('</span>')
 
 
+class LenientSettingsSpecs(SettingsSpec):
+    settings_spec = ("Lenient parsing options", None, (
+        ('Verify that lenient customization works fine.  '
+         "Immediately return with 0 (success) or 1 (error).  "
+         "In case of error, print a report on stdout.",
+            ['--test-patch'],
+            {'action': 'store_true', 'validator': validate_boolean}),
+    ))
+
+
 def main():
-    # Make docutils lenient.
-    patch_docutils()
 
     # Create a writer to deal with the generic element we may have created.
     writer = Writer()
@@ -147,12 +159,86 @@ def main():
 
     description = (
         'Generates (X)HTML documents from standalone reStructuredText '
-       'sources.  Be extremely forgiving against unknown elements.  '
+       'sources.  Be forgiving against unknown elements.  '
        + default_description)
 
-    publish_cmdline(writer=writer, description=description)
+    # the parser processes the settings too late: we want to decide earlier if
+    # we are running or testing.
+    if ('--test-patch' in sys.argv
+            and not ('-h' in sys.argv or '--help' in sys.argv)):
+        return test_patch(writer)
 
+    else:
+        # Make docutils lenient.
+        patch_docutils()
+
+        publish_cmdline(writer=writer, description=description,
+             settings_spec=LenientSettingsSpecs)
+        return 0
+
+def test_patch(writer):
+    """Verify that patching docutils works as expected."""
+    TEST_SOURCE = """`
+Hello `role`:norole:
+
+.. nodirective::
+"""
+    rv = 0
+    problems = []
+    exc = None
+
+    # patch and use lenient docutils
+    try:
+        try:
+            patch_docutils()
+        except Exception, exc:
+            problems.append("error during library patching")
+            raise
+
+        try:
+            out = publish_string(TEST_SOURCE,
+                writer=writer, settings_spec=LenientSettingsSpecs)
+        except Exception, exc:
+            problems.append("error while running patched docutils")
+            raise
+
+    except:
+        pass
+
+    # verify conform output
+    else:
+        out = out.replace("'", '"')
+        if '<span class="role-norole">' not in out:
+            problems.append(
+                "unknown role didn't produce the expected output")
+
+        if '<div class="directive-nodirective">' not in out:
+            problems.append(
+                "unknown directive didn't produce the expected output")
+
+    # report problems if any
+    if problems:
+        rv = 1
+        print >> sys.stderr, "Patching docutils failed!"
+        for problem in problems:
+            print >> sys.stderr, "-", problem
+
+    if rv:
+        print >> sys.stderr, "\nVersions:", \
+            'docutils:', docutils.__version__, docutils.__version_details__, \
+            '\nPython:', sys.version
+
+    if exc:
+        if '--traceback' in sys.argv:
+            print >> sys.stderr
+            import traceback
+            traceback.print_exc()
+        else:
+            print >> sys.stderr, \
+                "\nUse --traceback to display the error stack trace."
+
+    return rv
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
 
