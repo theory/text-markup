@@ -12,11 +12,13 @@ it as it deals with the parser at a relatively low level.
 from docutils import nodes, utils
 from docutils.core import publish_cmdline, default_description
 from docutils.parsers.rst import Directive, directives, roles
+from docutils.writers.html4css1 import HTMLTranslator, Writer
+from docutils.parsers.rst.states import Body, Inliner
 
 
-# A generic directive to deal with any unknown directive we may find.
-
-class any_directive(nodes.General, nodes.FixedTextElement): pass
+class any_directive(nodes.General, nodes.FixedTextElement):
+    """A generic directive to deal with any unknown directive we may find."""
+    pass
 
 class AnyDirective(Directive):
     """A directive returning its unaltered body."""
@@ -37,9 +39,9 @@ class AnyDirective(Directive):
         return [node]
 
 
-# A generic role to deal with any unknown role we may find.
-
-class any_role(nodes.Inline, nodes.TextElement): pass
+class any_role(nodes.Inline, nodes.TextElement):
+    """A generic role to deal with any unknown role we may find."""
+    pass
 
 class AnyRole:
     """A role to be rendered as a generic element with a specific class."""
@@ -54,12 +56,12 @@ class AnyRole:
         return [node], []
 
 
-# Patch the parser so that when an unknown directive is found, a generic one
-# is generated on the fly.
-
-from docutils.parsers.rst.states import Body
-
 def catchall_directive(self, match, **option_presets):
+    """Directive dispatch method.
+
+    Replacement for Body.directive(): if a directive is not known, build one
+    on the fly instead of reporting an error.
+    """
     type_name = match.group(1)
     directive_class, messages = directives.directive(
         type_name, self.memo.language, self.document)
@@ -75,23 +77,13 @@ def catchall_directive(self, match, **option_presets):
     return self.run_directive(
         directive_class, match, type_name, option_presets)
 
-# Patch the constructs dispatch table
-for i, (f, p) in enumerate(Body.explicit.constructs):
-    if f is Body.directive.im_func is f:
-        Body.explicit.constructs[i] = (catchall_directive, p)
-        break
-else:
-    assert False, "can't find directive dispatch entry"
-
-Body.directive = catchall_directive
-
-
-# Patch the parser so that when an unknown interpreted text role is found,
-# a generic one is generated on the fly.
-
-from docutils.parsers.rst.states import Inliner
 
 def catchall_interpreted(self, rawsource, text, role, lineno):
+    """Interpreted text role dispatch method.
+
+    Replacement for Inliner.interpreted(): if a role is not known, build one
+    on the fly instead of reporting an error.
+    """
     role_fn, messages = roles.role(role, self.language, lineno,
                                    self.reporter)
     # in case it's missing, register a generic role
@@ -105,18 +97,29 @@ def catchall_interpreted(self, rawsource, text, role, lineno):
     nodes, messages2 = role_fn(role, rawsource, text, lineno, self)
     return nodes, messages + messages2
 
-Inliner.interpreted = catchall_interpreted
 
+def patch_docutils():
+    """Change the docutils parser behaviour."""
+    # Patch the constructs dispatch table
+    for i, (f, p) in enumerate(Body.explicit.constructs):
+        if f is Body.directive.im_func is f:
+            Body.explicit.constructs[i] = (catchall_directive, p)
+            break
+    else:
+        assert False, "can't find directive dispatch entry"
 
-# Create a writer to deal with the generic element we may have created.
+    # Patch the parser so that when an unknown directive is found, a generic one
+    # is generated on the fly.
+    Body.directive = catchall_directive
 
-description = ('Generates (X)HTML documents from standalone reStructuredText '
-               'sources.  Be extremely forgiving against unknown elements.  '
-               + default_description)
+    # Patch the parser so that when an unknown interpreted text role is found,
+    # a generic one is generated on the fly.
+    Inliner.interpreted = catchall_interpreted
 
-from docutils.writers.html4css1 import Writer, HTMLTranslator
 
 class MyTranslator(HTMLTranslator):
+    """An HTML translator that can render with any_role/any_directive.
+    """
     def visit_any_directive(self, node):
         cls = node.get('dir_name')
         cls = cls and 'directive-%s' % cls or 'directive'
@@ -134,7 +137,22 @@ class MyTranslator(HTMLTranslator):
         self.body.append('</span>')
 
 
-writer = Writer()
-writer.translator_class = MyTranslator
+def main():
+    # Make docutils lenient.
+    patch_docutils()
 
-publish_cmdline(writer=writer, description=description)
+    # Create a writer to deal with the generic element we may have created.
+    writer = Writer()
+    writer.translator_class = MyTranslator
+
+    description = (
+        'Generates (X)HTML documents from standalone reStructuredText '
+       'sources.  Be extremely forgiving against unknown elements.  '
+       + default_description)
+
+    publish_cmdline(writer=writer, description=description)
+
+
+if __name__ == '__main__':
+    main()
+
