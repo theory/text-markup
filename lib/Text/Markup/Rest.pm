@@ -8,28 +8,17 @@ use constant WIN32  => $^O eq 'MSWin32';
 
 our $VERSION = '0.16';
 
-# Find rst2html (process stolen from App::Info).
-my $rst2html;
-foreach my $p (File::Spec->path) {
-    foreach my $f (qw(rst2html rst2html.py)) {
-        my $path = File::Spec->catfile($p, $f);
-        if (-f $path && -x $path) {
-            $rst2html = $path;
-            last;
-        }
-    }
-}
+# We ship with our own rst2html that's lenient with unknown directives.
+my $rst2html = File::Spec->catfile(
+    File::Basename::dirname(__FILE__),
+    'rst2html_lenient.py'
+);
 
-if ($rst2html) {
-    # We have it, but use our custom version instead.
-    $rst2html = File::Spec->catfile(
-        File::Basename::dirname(__FILE__),
-        'rst2html_lenient.py'
-    );
-} else {
+if (system($rst2html, '--test-patch') != 0) {
+    # Most likely because docutils not installed.
     use Carp;
     Carp::croak(
-        'Cannot find rst2html.py in path ' . join ':', File::Spec->path
+        "$rst2html will not execute"
     );
 }
 
