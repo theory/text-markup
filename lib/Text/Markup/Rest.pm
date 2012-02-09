@@ -30,7 +30,7 @@ my @OPTIONS = qw(
     --cloak-email-address
     --no-generator
     --quiet
-    );
+);
 
 # Options to improve rendering of Sphinx documents
 my @SPHINX_OPTIONS = qw(

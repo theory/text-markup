@@ -5,10 +5,9 @@ Revision history for Perl extension Text-Markup.
        can render specialized reST documents, such as Sphinx files, in a more
        forgiving way: it preserves the content of unknown directives while not
        emulating specialized rendering. Written by Daniele Varrazzo.
-
- running the `rst2html` script with `--quiet` and
-       `--strip-elements-with-class=system-message` to eliminat error output
-       for unknown directives, such as those often included for Sphinx.
+     - Improved handling of Sphinx directives in Rest output. Most directives
+       are stripped out, although `function` directives now turn out much
+       nicer. Props to Daniele Varrazzo for the work on the Rest parser.
 
 0.15  2012-01-13T23:04:16Z
       - Changed the parsers to return `undef` if no content was parsed from a
