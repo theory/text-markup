@@ -74,11 +74,12 @@ sub parser {
 
 # Stolen from SVN::Notify.
 sub _fh {
+    # Ignored; looks like docutils always emits UTF-8.
     my $encoding = shift;
     if (WIN32) {
         my $cmd = join join(q{" "}, @_) . q{"|};
         open my $fh, $cmd or die "Cannot fork: $!\n";
-        binmode $fh, ":encoding($encoding)" if $encoding;
+#        binmode $fh, ":encoding($encoding)" if $encoding;
         return $fh;
     }
 
@@ -87,7 +88,7 @@ sub _fh {
 
     if ($pid) {
         # Parent process. Set the encoding layer and return the file handle.
-        binmode $fh, ":encoding($encoding)" if $encoding;
+#        binmode $fh, ":encoding($encoding)" if $encoding;
         return $fh;
     } else {
         # Child process. Execute the commands.
