@@ -312,9 +312,10 @@ In such a case, read in the file as raw bytes:
 
       open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
 
-The returned HTML, however, must be encoded. Please include an L<encoding
-declaration|http://en.wikipedia.org/wiki/Character_encodings_in_HTML>,
-such as a content-type C<< <meta> >> element:
+The returned HTML, however, B<must be encoded in UTF-8>. Please include an
+L<encoding
+declaration|http://en.wikipedia.org/wiki/Character_encodings_in_HTML>, such as
+a content-type C<< <meta> >> element:
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 

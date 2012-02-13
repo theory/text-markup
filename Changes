@@ -9,6 +9,7 @@ Revision history for Perl extension Text-Markup.
        are stripped out, although `function` directives now turn out much
        nicer. Props to Daniele Varrazzo for the work on the Rest parser.
      - Fixed character encoding issues with the Rest parser.
+     - Fixed a character encoding issue in the test suite.
 
 0.15  2012-01-13T23:04:16Z
       - Changed the parsers to return `undef` if no content was parsed from a

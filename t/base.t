@@ -2,7 +2,6 @@
 
 use strict;
 use warnings;
-use utf8;
 use Test::More tests => 25;
 #use Test::More 'no_plan';
 use File::Spec::Functions qw(catdir);
@@ -80,8 +79,11 @@ PARSER: {
     package My::Funky::Parser;
     Text::Markup->register(funky => qr{funky(?:[.]txt)?});
     sub parser {
+        # Must return a UTF-8 encoded string.
         use utf8;
-        return 'fünky';
+        my $ret = 'fünky';
+        utf8::encode($ret);
+        return $ret;
     }
 }
 
