@@ -101,7 +101,12 @@ my @SPHINX_OPTIONS = qw(
 sub parser {
     my ($file, $encoding, $opts) = @_;
     my $html = do {
-        my $fh = _fh($encoding, $PYTHON, $RST2HTML, @OPTIONS, @SPHINX_OPTIONS, $file);
+        my $fh = _fh(
+            $PYTHON, $RST2HTML,
+            @OPTIONS, @SPHINX_OPTIONS,
+            '--input-encoding', $encoding,
+            $file
+        );
         local $/;
         <$fh>;
     };
@@ -118,11 +123,9 @@ sub parser {
 # Stolen from SVN::Notify.
 sub _fh {
     # Ignored; looks like docutils always emits UTF-8.
-    my $encoding = shift;
     if (WIN32) {
         my $cmd = join join(q{" "}, @_) . q{"|};
         open my $fh, $cmd or die "Cannot fork: $!\n";
-#        binmode $fh, ":encoding($encoding)" if $encoding;
         return $fh;
     }
 
@@ -130,8 +133,7 @@ sub _fh {
     die "Cannot fork: $!\n" unless defined $pid;
 
     if ($pid) {
-        # Parent process. Set the encoding layer and return the file handle.
-#        binmode $fh, ":encoding($encoding)" if $encoding;
+        # Parent process, return the file handle.
         return $fh;
     } else {
         # Child process. Execute the commands.
