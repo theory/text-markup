@@ -5,21 +5,64 @@ use strict;
 use File::Spec;
 use File::Basename ();
 use constant WIN32  => $^O eq 'MSWin32';
+use Symbol 'gensym';
+use IPC::Open3;
 
 our $VERSION = '0.16';
 
-# We ship with our own rst2html that's lenient with unknown directives.
-my $rst2html = File::Spec->catfile(
-    File::Basename::dirname(__FILE__),
-    'rst2html_lenient.py'
-);
-
-if (system($rst2html, '--test-patch') != 0) {
-    # Most likely because docutils not installed.
-    use Carp;
-    Carp::croak(
-        "$rst2html will not execute"
+# Find Python (process stolen from App::Info).
+my ($PYTHON, $RST2HTML);
+for my $exe (WIN32 ? 'python.exe' : 'python') {
+    my @path = (
+        File::Spec->path,
+        WIN32 ? (map { "C:\\Python$_" } '', 27, 26, 25) : ()
     );
+
+    for my $p (@path) {
+        my $path = File::Spec->catfile($p, $exe);
+        next unless -f $path && -x $path;
+        $PYTHON = $path;
+        last;
+    }
+
+    unless ($PYTHON) {
+        use Carp;
+        my $sep = WIN32 ? ';' : ':';
+        Carp::croak(
+            "Cannot find $exe in path " . join $sep => @path
+        );
+    }
+
+    # We have python, let's find out if we have docutils.
+    my $output = gensym;
+    my $pid = open3 undef, $output, $output, $PYTHON, '-c', 'import docutils';
+    waitpid $pid, 0;
+    if ($?) {
+        use Carp;
+        local $/;
+        Carp::croak(
+            qq{Missing required Python "docutils" module\n},
+            <$output>
+        );
+    }
+
+    # We ship with our own rst2html that's lenient with unknown directives.
+    $RST2HTML = File::Spec->catfile(
+        File::Basename::dirname(__FILE__),
+        'rst2html_lenient.py'
+    );
+
+    # Make sure it looks like it will work.
+    $pid = open3 undef, $output, $output, $PYTHON, $RST2HTML, '--test-patch';
+    waitpid $pid, 0;
+    if ($?) {
+        use Carp;
+        local $/;
+        Carp::croak(
+            qq{$RST2HTML will not execute\n},
+            <$output>
+        );
+    }
 }
 
 # Optional arguments to pass to rst2html
@@ -58,7 +101,7 @@ my @SPHINX_OPTIONS = qw(
 sub parser {
     my ($file, $encoding, $opts) = @_;
     my $html = do {
-        my $fh = _fh($encoding, $rst2html, @OPTIONS, @SPHINX_OPTIONS, $file);
+        my $fh = _fh($encoding, $PYTHON, $RST2HTML, @OPTIONS, @SPHINX_OPTIONS, $file);
         local $/;
         <$fh>;
     };
