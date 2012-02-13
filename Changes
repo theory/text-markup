@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.16
+0.16  2012-02-13T17:23:00Z
      - Rest support now uses its own implementation of `rst2html` so that it
        can render specialized reST documents, such as Sphinx files, in a more
        forgiving way: it preserves the content of unknown directives while not
