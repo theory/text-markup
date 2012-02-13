@@ -95,6 +95,7 @@ my @SPHINX_OPTIONS = qw(
 
     --dir-nested module
     --dir-nested function
+    --output-encoding utf-8
 );
 # note: domains directive (last 2 options) incomplete
 
