@@ -115,7 +115,7 @@ sub parser {
     # Make sure we have something.
     return undef if $html =~ m{<div\s+class\s*=\s*(['"])document\1>\s+</div>}ms;
 
-    # Seems that --no-generator is not respected. :-(
+    # Alas, --no-generator does not remove the generator meta tag. :-(
     $html =~ s{^\s*<meta\s+name\s*=\s*(['"])generator\1[^>]+>\n}{}ms;
 
     return $html;
