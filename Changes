@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.17
+0.17  2012-02-28T04:31:07Z
      - Added Asciidoc support.
 
 0.16  2012-02-13T17:23:00Z
