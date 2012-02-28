@@ -1,6 +1,7 @@
 Revision history for Perl extension Text-Markup.
 
 0.17
+     - Added Asciidoc support.
 
 0.16  2012-02-13T17:23:00Z
      - Rest support now uses its own implementation of `rst2html` so that it

@@ -24,3 +24,4 @@ Varrazzo
 reST
 reStructuredText
 docutils
+Asciidoc

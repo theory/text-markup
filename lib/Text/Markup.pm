@@ -17,6 +17,7 @@ my %REGEX_FOR = (
     trac          => qr{tra?c},
     mediawiki     => qr{(?:m(?:edia)?)?wiki},
     rest          => qr{re?st},
+    asciidoc      => qr{a(?:sc(?:iidoc)?|doc)?},
 );
 
 sub register {
@@ -116,6 +117,8 @@ resulting HTML.
 This distribution includes support for a number of markup formats:
 
 =over
+
+=item * L<Asciidoc|http://www.methods.co.nz/asciidoc/>
 
 =item * L<HTML|http://whatwg.org/html>
 

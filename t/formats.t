@@ -64,3 +64,4 @@ textile,Text::Markup::Textile,Text::Textile 2.10,textile
 mediawiki,Text::Markup::Mediawiki,Text::MediawikiFormat 1.0,wiki,mwiki,mediawiki
 multimarkdown,Text::Markup::Multimarkdown,Text::MultiMarkdown 1.000033,mmd,mmkdn,mmkd,mmdown,mmarkdown
 rest,Text::Markup::Rest,Text::Markup::Rest,rest,rst
+asciidoc,Text::Markup::Asciidoc,Text::Markup::Asciidoc,asciidoc,asc,adoc
