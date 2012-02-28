@@ -8,7 +8,7 @@ use Symbol 'gensym';
 use IPC::Open3;
 use utf8;
 
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 # Find Asciidoc.
 my $ASCIIDOC;
