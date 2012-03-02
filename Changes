@@ -1,6 +1,8 @@
 Revision history for Perl extension Text-Markup.
 
 0.18
+     - Now require HTML::Tagset, since Text::MediawikiFormat seems to need it
+       but only recommends it.
 
 0.17  2012-02-28T04:31:07Z
      - Added Asciidoc support.

@@ -15,6 +15,7 @@ my $build = Module::Build->new(
     requires => {
         'File::BOM'             => '0.14',
         'HTML::Entities'        => 0,
+        'HTML::Tagset'          => 0, # Needed by Text::MediawikiFormat
         'IPC::Open3'            => 0,
         'perl'                  => 5.008001,
         'Pod::Simple::XHTML'    => '3.15',
