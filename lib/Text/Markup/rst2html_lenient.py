@@ -5,9 +5,10 @@ Parse a reST file into HTML in a very forgiving way.
 The script is meant to render specialized reST documents, such as Sphinx
 files, preserving the content, while not emulating the original rendering.
 
-The script is currently tested against docutils 0.7. Other versions may break
-it as it deals with the parser at a relatively low level. Use --test-patch to
-verify if the script works as expected with your library version.
+The script is currently tested against docutils 0.7-0.10. Other versions may
+break it as it deals with the parser at a relatively low level. Use
+--test-patch to verify if the script works as expected with your library
+version.
 """
 
 import sys
@@ -200,8 +201,14 @@ def main():
         # Make docutils lenient.
         patch_docutils()
 
+        overrides = {
+            # If Pygments is missing, code-block directives are swallowed
+            # with Docutils >= 0.9.
+            'syntax_highlight': 'none',
+        }
+
         publish_cmdline(writer=writer, description=description,
-             settings_spec=LenientSettingsSpecs)
+             settings_spec=LenientSettingsSpecs, settings_overrides=overrides)
         return 0
 
 def test_patch(writer):
