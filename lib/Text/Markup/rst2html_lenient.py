@@ -205,6 +205,9 @@ def main():
             # If Pygments is missing, code-block directives are swallowed
             # with Docutils >= 0.9.
             'syntax_highlight': 'none',
+
+            # not available on Docutils < 0.8 so can't pass as an option
+            'math_output': 'HTML',
         }
 
         publish_cmdline(writer=writer, description=description,
