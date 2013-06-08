@@ -4,6 +4,8 @@ Revision history for Perl extension Text-Markup.
      - Now require HTML::Tagset, since Text::MediawikiFormat seems to need it
        but only recommends it.
      - Removed all Pod tests from the distribution.
+     - Updated reST to support docutils 0.7 - 0.10 and when Pygments is not
+       available. Daniele Varrazzo.
 
 0.17  2012-02-28T04:31:07Z
      - Added Asciidoc support.
