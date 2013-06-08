@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.18
+0.18  2013-06-08T23:24:09Z
      - Now require HTML::Tagset, since Text::MediawikiFormat seems to need it
        but only recommends it.
      - Removed all Pod tests from the distribution.
