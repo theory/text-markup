@@ -34,7 +34,7 @@ my $build = Module::Build->new(
         resources => {
             homepage   => 'http://search.cpan.org/dist/Text-Markup/',
             bugtracker => 'http://github.com/theory/text-markup/issues/',
-            repository => 'http://github.com/theory/text-markup/tree/',
+            repository => 'http://github.com/theory/text-markup',
         }
     },
 );
