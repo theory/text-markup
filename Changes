@@ -1,5 +1,7 @@
 Revision history for Perl extension Text-Markup.
 
+0.20
+
 0.19  2014-02-07T04:00:56Z
      - Fixed Pod markup so that it does not strip text from the first line of
        verbatim blocks.
