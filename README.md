@@ -1,4 +1,4 @@
-Text/Markup version 0.18
+Text/Markup version 0.19
 ========================
 
 This library's module, Text::Markup, provides an single interface for parsing
