@@ -14,7 +14,11 @@ sub parser {
     my $p = Pod::Simple::XHTML->new;
     # Output everything as UTF-8.
     $p->html_header_tags('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />');
-    $p->strip_verbatim_indent(sub { (my $i = $_[0]->[0]) =~ s/\S.*//; $i });
+    $p->strip_verbatim_indent(sub {
+        my $lines = shift;
+        (my $i = $lines->[0]) =~ s/\S.*//;
+        return $i;
+    });
     $p->output_string(\my $html);
     # Want user supplied options to override even these default behaviors,
     # if necessary

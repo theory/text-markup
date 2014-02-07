@@ -1,5 +1,9 @@
 Revision history for Perl extension Text-Markup.
 
+0.19
+     - Fixed Pod markup so that it does not strip text from the first line of
+       verbatim blocks.
+
 0.18  2013-06-08T23:24:09Z
      - Now require HTML::Tagset, since Text::MediawikiFormat seems to need it
        but only recommends it.
