@@ -10,12 +10,21 @@ use Carp;
 # at all. So it might as well be this.
 BEGIN { use_ok 'Text::Markup' or die; }
 
-sub slurp($) {
-    my $file = shift;
+sub slurp($$) {
+    my ($filter, $file) = @_;
+    $filter ||= sub { shift };
     open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
     local $/;
-    return <$fh>;
+    return $filter->(<$fh>);
 }
+
+my %filter_for = (
+    mediawiki => sub {
+        $_[0] =~ s/ö/CGI::escapeHTML(do { use utf8; 'ö' })/e
+            if eval { CGI->VERSION >= 4.11 };
+        return shift;
+    },
+);
 
 my @loaded = Text::Markup->formats;
 while (my $data = <DATA>) {
@@ -39,10 +48,11 @@ while (my $data = <DATA>) {
                 "Should guess that .$ext extension is $format";
         }
 
+        my $expect = slurp $filter_for{$format}, catfile('t', 'html', "$format.html");
         is $parser->parse(
             file   => catfile('t', 'markups', "$format.txt"),
             format => $format,
-        ), slurp catfile('t', 'html', "$format.html"), "Parse $format file";
+        ), $expect, "Parse $format file";
 
         is $parser->parse(
             file   => catfile('t', 'empty.txt'),

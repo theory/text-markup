@@ -1,6 +1,8 @@
 Revision history for Perl extension Text-Markup.
 
 0.20
+     - Fixed a failing test for the Mediawiki format due to a change in CGI
+       v4.11. Thanks to Andreas Koenig for the report and diagnosis.
 
 0.19  2014-02-07T04:00:56Z
      - Fixed Pod markup so that it does not strip text from the first line of
