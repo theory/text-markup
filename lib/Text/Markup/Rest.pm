@@ -8,7 +8,7 @@ use constant WIN32  => $^O eq 'MSWin32';
 use Symbol 'gensym';
 use IPC::Open3;
 
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 
 # Find Python (process stolen from App::Info).
 my ($PYTHON, $RST2HTML);

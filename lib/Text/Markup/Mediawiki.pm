@@ -5,7 +5,7 @@ use strict;
 use File::BOM qw(open_bom);
 use Text::MediawikiFormat '1.0';
 
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
