@@ -20,6 +20,7 @@ Markdown
 MultiMarkdown
 UI
 GitHub
+Daniele
 Varrazzo
 reST
 reStructuredText
