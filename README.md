@@ -5,6 +5,7 @@ This library's module, Text::Markup, provides an single interface for parsing
 a large number of text markup formats and converting them to HTML. It
 currently supports the following markups:
 
+* [Asciidoc](http://www.methods.co.nz/asciidoc/)
 * [HTML](http://whatwg.org/html)
 * [Markdown](http://daringfireball.net/projects/markdown/)
 * [MultiMarkdown](http://fletcherpenney.net/multimarkdown/)

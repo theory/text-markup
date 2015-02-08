@@ -113,7 +113,7 @@ __END__
 
 =head1 Name
 
-Text::Markup::Asciidoc - reStructuredText parser for Text::Markup
+Text::Markup::Asciidoc - Asciidoc parser for Text::Markup
 
 =head1 Synopsis
 
