@@ -26,3 +26,5 @@ reST
 reStructuredText
 docutils
 Asciidoc
+BBcode
+Kanashiro
