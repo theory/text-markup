@@ -9,16 +9,10 @@ our $VERSION = '0.21';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
-    my $parse = Parse::BBCode->new();
+    my $parse = Parse::BBCode->new;
     open_bom my $fh, $file, ":encoding($encoding)";
     local $/;
-    my $content;
-
-    while(<$fh>) {
-      $content .= $_;
-    }
-
-    my $html = $parse->render($content);
+    my $html = $parse->render(<$fh>);
     return unless $html =~ /\S/;
     utf8::encode($html);
     return qq{<html>
@@ -45,8 +39,9 @@ Text::Markup::Bbcode - BBcode parser for Text::Markup
 
 =head1 Description
 
-This is the L<BBcode|http://www.bbcode.org/> parser for L<Text::Markup>. It reads in the file (relying 
-on a L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
+This is the L<BBcode|http://www.bbcode.org/> parser for L<Text::Markup>. It
+reads in the file (relying on a
+L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
 L<Text::Markdown> for parsing, and then returns the generated HTML as an
 encoded UTF-8 string with an C<http-equiv="Content-Type"> element identifying
 the encoding as UTF-8.
@@ -54,6 +49,8 @@ the encoding as UTF-8.
 It recognizes files with the following extensions as Markdown:
 
 =over
+
+=item F<.bb>
 
 =item F<.bbcode>
 
