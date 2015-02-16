@@ -2,6 +2,7 @@ Revision history for Perl extension Text-Markup.
 
 0.21
      - Fixed description of Asciidoc and added it to the README.
+     - Added support for BBcode. Thanks to Lucas Kanashiro for the patch!
 
 0.20   2015-01-22T00:54:50Z
      - Fixed a failing test for the Mediawiki format due to a change in CGI
