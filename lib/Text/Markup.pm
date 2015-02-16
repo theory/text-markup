@@ -18,6 +18,7 @@ my %REGEX_FOR = (
     mediawiki     => qr{(?:m(?:edia)?)?wiki},
     rest          => qr{re?st},
     asciidoc      => qr{a(?:sc(?:iidoc)?|doc)?},
+    bbcode        => qr{bb(?:code)?},
 );
 
 sub register {

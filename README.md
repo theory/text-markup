@@ -14,6 +14,7 @@ currently supports the following markups:
 * [reStructuredText](http://docutils.sourceforge.net/docs/user/rst/quickref.html)
 * [Textile](http://textism.com/tools/textile/)
 * [Trac](http://trac.edgewall.org/wiki/WikiFormatting)
+* [BBcode](http://www.bbcode.org/)
 
 Installation
 ------------
@@ -45,6 +46,7 @@ Text-Markup requires the following modules:
 * Text::MediawikiFormat 1.0
 * Text::Textile 2.10
 * Text::Trac 0.10
+* Parse::BBCode 0.15
 
 Copyright and Licence
 ---------------------

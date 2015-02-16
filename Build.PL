@@ -25,6 +25,7 @@ my $build = Module::Build->new(
         'Text::MediawikiFormat' => '1.0',
         'Text::Textile'         => '2.10',
         'Text::Trac'            => '0.10',
+        'Parse::BBCode'         => '0.15',
     },
     recommends => {
         'Test::Pod'           => '1.41',
