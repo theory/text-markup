@@ -1,6 +1,6 @@
 before_install:
-  - sudo pip install docutils
-  - sudo apt-get install asciidoc
+  - sudo -H pip install docutils
+  - sudo -H apt-get install asciidoc
 language: perl
 perl:
   - "5.21"
