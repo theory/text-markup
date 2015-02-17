@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.21
+0.21  2015-02-17T00:18:20Z
      - Fixed description of Asciidoc and added it to the README.
      - Added support for BBcode. Thanks to Lucas Kanashiro for the patch!
 
