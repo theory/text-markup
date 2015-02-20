@@ -122,6 +122,10 @@ This distribution includes support for a number of markup formats:
 
 =item * L<Asciidoc|http://www.methods.co.nz/asciidoc/>
 
+=item * L<BBcode|http://www.bbcode.org/>
+
+=item * L<Creole|http://www.wikicreole.org/>
+
 =item * L<HTML|http://whatwg.org/html>
 
 =item * L<Markdown|http://daringfireball.net/projects/markdown/>
