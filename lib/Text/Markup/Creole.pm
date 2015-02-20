@@ -11,7 +11,7 @@ sub parser {
     my ($file, $encoding, $opts) = @_;
     open_bom my $fh, $file, ":encoding($encoding)";
     local $/;
-    my $html = &creole_parse(<$fh>);
+    my $html = creole_parse(<$fh>);
     return unless $html =~ /\S/;
     utf8::encode($html);
     return qq{<html>
