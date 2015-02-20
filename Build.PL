@@ -26,6 +26,7 @@ my $build = Module::Build->new(
         'Text::Textile'         => '2.10',
         'Text::Trac'            => '0.10',
         'Parse::BBCode'         => '0.15',
+        'Text::WikiCreole'      => '0.07',
     },
     recommends => {
         'Test::Pod'           => '1.41',

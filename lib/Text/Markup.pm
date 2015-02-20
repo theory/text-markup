@@ -19,6 +19,7 @@ my %REGEX_FOR = (
     rest          => qr{re?st},
     asciidoc      => qr{a(?:sc(?:iidoc)?|doc)?},
     bbcode        => qr{bb(?:code)?},
+    creole        => qr{creole},
 );
 
 sub register {

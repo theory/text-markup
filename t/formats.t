@@ -76,3 +76,4 @@ multimarkdown,Text::Markup::Multimarkdown,Text::MultiMarkdown 1.000033,mmd,mmkdn
 rest,Text::Markup::Rest,Text::Markup::Rest,rest,rst
 asciidoc,Text::Markup::Asciidoc,Text::Markup::Asciidoc,asciidoc,asc,adoc
 bbcode,Text::Markup::Bbcode,Parse::BBCode,bbcode,bb
+creole,Text::Markup::Creole,Text::WikiCreole,creole

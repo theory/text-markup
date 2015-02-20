@@ -15,6 +15,7 @@ currently supports the following markups:
 * [Textile](http://textism.com/tools/textile/)
 * [Trac](http://trac.edgewall.org/wiki/WikiFormatting)
 * [BBcode](http://www.bbcode.org/)
+* [Creole](http://www.wikicreole.org/)
 
 Installation
 ------------
@@ -47,6 +48,7 @@ Text-Markup requires the following modules:
 * Text::Textile 2.10
 * Text::Trac 0.10
 * Parse::BBCode 0.15
+* Text::WikiCreole 0.07
 
 Copyright and Licence
 ---------------------
