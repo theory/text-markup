@@ -5,7 +5,7 @@ use strict;
 use File::BOM qw(open_bom);
 use Text::WikiCreole;
 
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
