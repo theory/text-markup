@@ -21,7 +21,7 @@ sub slurp($$) {
 my %filter_for = (
     mediawiki => sub {
         $_[0] =~ s/ö/CGI::escapeHTML(do { use utf8; 'ö' })/e
-            if eval { CGI->VERSION >= 4.11 };
+            if eval { CGI->VERSION >= 4.11 && CGI->VERSION < 4.14 };
         return shift;
     },
 );
