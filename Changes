@@ -5,6 +5,10 @@ Revision history for Perl extension Text-Markup.
      - Fixed a failing test for the Mediawiki format due to a change in CGI
        v4.14. This reverses the workaround required by CGI 4.11, introduced in
        v0.20. Not that you care. It's just a test change.
+     - Updated the Pod parser to determine the indentation of verbatim blocks
+       by the line with the shortest leading whitespace, rather than the
+       whitespace of just the first line. Inspired by an equivalent approach
+       in Mojolicious by Joel Berger.
 
 0.22  2015-02-20T03:52:36Z
      - Added support for Creole. Thanks to Lucas Kanashiro for the patch!
