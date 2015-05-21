@@ -25,7 +25,7 @@ my %REGEX_FOR = (
 sub register {
     my ($class, $name, $regex) = @_;
     my $pkg = caller;
-    $REGEX_FOR{$name}  = $regex;
+    $REGEX_FOR{$name}   = $regex;
     $_PARSER_FOR{$name} = $pkg->can('parser')
         or croak "No parser() function defind in $pkg";
 }
