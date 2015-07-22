@@ -15,6 +15,7 @@ sub parser {
     return unless $html =~ /\S/;
     utf8::encode($html);
     return qq{<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
