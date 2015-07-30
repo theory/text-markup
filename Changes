@@ -1,6 +1,8 @@
 Revision history for Perl extension Text-Markup.
 
 0.24
+     - Added missing `<head>` tag to all output. Thanks to Axel Beckert for
+       the pull request (#16, #18)!
 
 0.23  2015-05-21T06:23:35Z
      - Added BBcode and Creole to the module description.
