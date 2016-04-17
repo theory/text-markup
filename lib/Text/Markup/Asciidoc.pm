@@ -76,6 +76,7 @@ sub parser {
     # Make sure we have something.
     return unless $html =~ /\S/;
     utf8::encode $html;
+    return $html if $opts->{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -120,6 +121,7 @@ Text::Markup::Asciidoc - Asciidoc parser for Text::Markup
 
   use Text::Markup;
   my $html = Text::Markup->new->parse(file => 'hello.adoc');
+  my $raw_asciidoc = Text::Markup->new->parse(file => 'hello.adoc', raw => 1 );
 
 =head1 Description
 
@@ -138,6 +140,10 @@ recognizes files with the following extensions as Asciidoc:
 =item F<.adoc>
 
 =back
+
+Normally this parser returns the output of C<asciidoc> wrapped in a minimal
+HTML page skeleton. If you would prefer to just get the exact output returned
+by C<asciidoc>, you can pass in a true value for the C<raw> option.
 
 =head1 Author
 
