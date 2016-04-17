@@ -13,6 +13,7 @@ my $build = Module::Build->new(
         'Test::More'            => '0.96',
     },
     requires => {
+        'Class::Load'           => 0,
         'File::BOM'             => '0.14',
         'HTML::Entities'        => 0,
         'HTML::Tagset'          => 0, # Needed by Text::MediawikiFormat
