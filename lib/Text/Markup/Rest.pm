@@ -2,6 +2,7 @@ package Text::Markup::Rest;
 
 use 5.8.1;
 use strict;
+use warnings;
 use File::Spec;
 use File::Basename ();
 use constant WIN32  => $^O eq 'MSWin32';

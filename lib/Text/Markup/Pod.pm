@@ -2,6 +2,7 @@ package Text::Markup::Pod;
 
 use 5.8.1;
 use strict;
+use warnings;
 use Pod::Simple::XHTML '3.15';
 
 # Disable the use of HTML::Entities.

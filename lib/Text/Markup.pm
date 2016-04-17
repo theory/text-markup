@@ -2,6 +2,7 @@ package Text::Markup;
 
 use 5.8.1;
 use strict;
+use warnings;
 use Text::Markup::None;
 use Carp;
 

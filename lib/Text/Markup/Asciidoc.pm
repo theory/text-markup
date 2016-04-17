@@ -2,6 +2,7 @@ package Text::Markup::Asciidoc;
 
 use 5.8.1;
 use strict;
+use warnings;
 use File::Spec;
 use constant WIN32  => $^O eq 'MSWin32';
 use Symbol 'gensym';

@@ -2,6 +2,7 @@ package Text::Markup::None;
 
 use 5.8.1;
 use strict;
+use warnings;
 use HTML::Entities;
 use File::BOM qw(open_bom);
 
