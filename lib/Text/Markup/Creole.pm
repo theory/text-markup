@@ -15,6 +15,7 @@ sub parser {
     my $html = creole_parse(<$fh>);
     return unless $html =~ /\S/;
     utf8::encode($html);
+    return $html if $opts->{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -37,6 +38,7 @@ Text::Markup::Creole - Creole parser for Text::Markup
 =head1 Synopsis
 
   my $html = Text::Markup->new->parse(file => 'file.creole');
+  my $raw  = Text::Markup->new->parse(file => 'file.creole', raw => 1);
 
 =head1 Description
 
@@ -54,6 +56,10 @@ It recognizes files with the following extensions as Markdown:
 =item F<.creole>
 
 =back
+
+Normally this module returns the output wrapped in a minimal HTML document
+skeleton. If you would like the raw output without the skeleton, you can pass
+the C<raw> option to C<parse>.
 
 =head1 Author
 

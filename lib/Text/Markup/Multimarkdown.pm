@@ -16,6 +16,7 @@ sub parser {
     my $html = $md->markdown(<$fh>);
     return unless $html =~ /\S/;
     utf8::encode($html);
+    return $html if $opts->{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -38,6 +39,7 @@ Text::Markup::Multimarkdown - MultiMarkdown parser for Text::Markup
 =head1 Synopsis
 
   my $html = Text::Markup->new->parse(file => 'README.md');
+  my $raw  = Text::Markup->new->parse(file => 'README.md', raw => 1);
 
 =head1 Description
 
@@ -63,6 +65,10 @@ It recognizes files with the following extensions as MultiMarkdown:
 =item F<.multimarkdown>
 
 =back
+
+Normally this module returns the output wrapped in a minimal HTML document
+skeleton. If you would like the raw output without the skeleton, you can pass
+the C<raw> option to C<parse>.
 
 =head1 Author
 
