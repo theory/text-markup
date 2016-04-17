@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Test::More 0.96;
+use Class::Load qw(try_load_class);
 use File::Spec::Functions qw(catfile);
 use Carp;
 
@@ -30,10 +31,11 @@ my @loaded = Text::Markup->formats;
 while (my $data = <DATA>) {
     next if $data =~ /^#/;
     chomp $data;
-    my ($format, $module, $req, @exts) = split /,/ => $data;
+    my ($format, $module, $req, $version, @exts) = split /,/ => $data;
     subtest "Testing $format format" => sub {
         local $@;
-        eval "use $req; 1;" if $req;
+        my $opts = $version ? { -version => $version } : {};
+        try_load_class($req, $opts) if $req;
         plan skip_all => "$module not loading" if $@;
         plan tests => @exts + 5;
         use_ok $module or next;
@@ -66,14 +68,14 @@ done_testing;
 
 __DATA__
 # Format,Format Module,Required Module,extensions
-markdown,Text::Markup::Markdown,Text::Markdown 1.000004,md,mkdn,mkd,mdown,markdown
-html,Text::Markup::HTML,,html,htm,xhtml,xhtm
-pod,Text::Markup::Pod,Pod::Simple::XHTML 3.15,pod,pm,pl
-trac,Text::Markup::Trac,Text::Trac 0.10,trac,trc
-textile,Text::Markup::Textile,Text::Textile 2.10,textile
-mediawiki,Text::Markup::Mediawiki,Text::MediawikiFormat 1.0,wiki,mwiki,mediawiki
-multimarkdown,Text::Markup::Multimarkdown,Text::MultiMarkdown 1.000033,mmd,mmkdn,mmkd,mmdown,mmarkdown
-rest,Text::Markup::Rest,Text::Markup::Rest,rest,rst
-asciidoc,Text::Markup::Asciidoc,Text::Markup::Asciidoc,asciidoc,asc,adoc
-bbcode,Text::Markup::Bbcode,Parse::BBCode,bbcode,bb
-creole,Text::Markup::Creole,Text::WikiCreole,creole
+markdown,Text::Markup::Markdown,Text::Markdown,1.000004,md,mkdn,mkd,mdown,markdown
+html,Text::Markup::HTML,,,html,htm,xhtml,xhtm
+pod,Text::Markup::Pod,Pod::Simple::XHTML,3.15,pod,pm,pl
+trac,Text::Markup::Trac,Text::Trac,0.10,trac,trc
+textile,Text::Markup::Textile,Text::Textile,2.10,textile
+mediawiki,Text::Markup::Mediawiki,Text::MediawikiFormat,1.0,wiki,mwiki,mediawiki
+multimarkdown,Text::Markup::Multimarkdown,Text::MultiMarkdown,1.000033,mmd,mmkdn,mmkd,mmdown,mmarkdown
+rest,Text::Markup::Rest,Text::Markup::Rest,,rest,rst
+asciidoc,Text::Markup::Asciidoc,Text::Markup::Asciidoc,,asciidoc,asc,adoc
+bbcode,Text::Markup::Bbcode,Parse::BBCode,,bbcode,bb
+creole,Text::Markup::Creole,Text::WikiCreole,,creole

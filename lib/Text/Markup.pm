@@ -2,6 +2,7 @@ package Text::Markup;
 
 use 5.8.1;
 use strict;
+use Class::Load 'try_load_class';
 use Text::Markup::None;
 use Carp;
 
@@ -35,7 +36,7 @@ sub _parser_for {
     return Text::Markup::None->can('parser') unless $format;
     return $_PARSER_FOR{$format} if $_PARSER_FOR{$format};
     my $pkg = __PACKAGE__ . '::' . ($format eq 'html' ? 'HTML' : ucfirst $format);
-    eval "require $pkg; 1" or die $@;
+    try_load_class($pkg) or die $@;
     return $_PARSER_FOR{$format} = $pkg->can('parser')
         || croak "No parser() function defind in $pkg";
 }
