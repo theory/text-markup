@@ -12,11 +12,7 @@ perl:
   - "5.12"
   - "5.10"
   - "5.8"
-  - "blead"
-  - "dev"
-matrix:
-  allow_failures:
-    - perl: blead
+
 before_install:
   - pip install docutils
   - apt-get install asciidoc
