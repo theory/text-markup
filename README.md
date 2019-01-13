@@ -1,6 +1,9 @@
 Text/Markup version 0.24
 ========================
 
+[![CPAN version](https://badge.fury.io/pl/FSA-Rules.svg)](https://badge.fury.io/pl/FSA-Rules)
+[![Build Status](https://travis-ci.org/theory/fsa-rules.svg)](https://travis-ci.com/theory/fsa-rules)
+
 This library's module, Text::Markup, provides an single interface for parsing
 a large number of text markup formats and converting them to HTML. It
 currently supports the following markups:
