@@ -14,8 +14,8 @@ perl:
   - "5.8"
 
 before_install:
-  - pip install docutils
-  - apt-get install asciidoc
+  - sudo pip install docutils
+  - sudo apt-get install asciidoc
   - eval $(curl https://travis-perl.github.io/init) --auto
 
 jobs:
