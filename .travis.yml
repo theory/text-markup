@@ -1,8 +1,6 @@
 sudo: true
 language: perl
 perl:
-  - "blead"
-  - "dev"
   - "5.28"
   - "5.26"
   - "5.24"
@@ -14,6 +12,8 @@ perl:
   - "5.12"
   - "5.10"
   - "5.8"
+  - "blead"
+  - "dev"
 matrix:
   allow_failures:
     - perl: blead
