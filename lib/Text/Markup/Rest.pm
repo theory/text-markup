@@ -13,7 +13,7 @@ our $VERSION = '0.24';
 
 # Find Python (process stolen from App::Info).
 my ($PYTHON, $RST2HTML);
-for my $exe (WIN32 ? 'python.exe' : 'python') {
+for my $exe (WIN32 ? 'python.exe' : 'python3') {
     my @path = (
         File::Spec->path,
         WIN32 ? (map { "C:\\Python$_" } '', 27, 26, 25) : ()
