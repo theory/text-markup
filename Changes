@@ -11,6 +11,7 @@ Revision history for Perl extension Text-Markup.
        makes sense. This option allows markup to be output without wrapping it
        in a minimal HTML skeleton. Thanks to John SJ Anderson for the patch
        (#2, #24)!
+     - Ported reST to Python 3. Thanks to gregor herrmann for the PR (#26).
 
 0.23  2015-05-21T06:23:35Z
      - Added BBcode and Creole to the module description.
