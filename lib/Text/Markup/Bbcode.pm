@@ -6,7 +6,7 @@ use warnings;
 use File::BOM qw(open_bom);
 use Parse::BBCode;
 
-our $VERSION = '0.24';
+our $VERSION = '0.25';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;

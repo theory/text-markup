@@ -1,5 +1,7 @@
 Revision history for Perl extension Text-Markup.
 
+0.25
+
 0.24  2019-12-12T00:53:25Z
      - Added missing `<head>` tag to all output. Thanks to Axel Beckert for
        the pull request (#16, #18)!
