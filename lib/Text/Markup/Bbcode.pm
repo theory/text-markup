@@ -70,7 +70,7 @@ Lucas Kanashiro <kanashiro.duarte@gmail.com>
 
 =head1 Copyright and License
 
-Copyright (c) 2011-2016 Lucas Kanashiro. Some Rights Reserved.
+Copyright (c) 2011-2019 Lucas Kanashiro. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
