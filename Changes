@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.24
+0.24  2019-12-12T00:53:25Z
      - Added missing `<head>` tag to all output. Thanks to Axel Beckert for
        the pull request (#16, #18)!
      - Added the `format_matchers` class method, which returns a list of
