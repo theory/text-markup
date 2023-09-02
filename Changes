@@ -1,6 +1,9 @@
 Revision history for Perl extension Text-Markup.
 
 0.25
+    - Fixed the importation of Pod::Simple::XHTML and Text::Trac to use the
+      correct syntax for requiring a minimum version. Thanks to Graham Knop
+      for the PR (#27)!
 
 0.24  2019-12-12T00:53:25Z
      - Added missing `<head>` tag to all output. Thanks to Axel Beckert for
