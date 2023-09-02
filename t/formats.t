@@ -49,10 +49,17 @@ while (my $data = <DATA>) {
         }
 
         my $expect = slurp $filter_for{$format}, catfile('t', 'html', "$format.html");
-        is $parser->parse(
+        my $html = $parser->parse(
             file   => catfile('t', 'markups', "$format.txt"),
             format => $format,
-        ), $expect, "Parse $format file";
+        );
+
+
+        # docutils space character before closing tag of XML declaration in Nov
+        # 2022 (https://github.com/docutils/docutils/commit/f93b895), so remove
+        # it when we run tests against older versions.
+        $html =~ s/ \?>/\?>/ if $format eq 'rest';
+        is $html, $expect, "Parse $format file";
 
         is $parser->parse(
             file   => catfile('t', 'empty.txt'),
