@@ -9,7 +9,7 @@ use Symbol 'gensym';
 use IPC::Open3;
 use utf8;
 
-our $VERSION = '0.25';
+our $VERSION = '0.30';
 
 # Find Asciidoc.
 my $ASCIIDOC;

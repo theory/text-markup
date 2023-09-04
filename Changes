@@ -1,5 +1,7 @@
 Revision history for Perl extension Text-Markup.
 
+0.30
+
 0.25  2023-09-04T22:20:13Z
     - Fixed the importation of Pod::Simple::XHTML, Text::Trac, Text::Textile,
       and Text::MediawikiFormat to use the correct syntax for requiring a

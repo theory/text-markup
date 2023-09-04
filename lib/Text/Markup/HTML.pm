@@ -4,7 +4,7 @@ use 5.8.1;
 use strict;
 use warnings;
 
-our $VERSION = '0.25';
+our $VERSION = '0.30';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
