@@ -4,7 +4,7 @@ use 5.8.1;
 use strict;
 use warnings;
 use File::BOM qw(open_bom);
-use Text::MediawikiFormat '1.0';
+use Text::MediawikiFormat 1.0;
 
 our $VERSION = '0.25';
 

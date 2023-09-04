@@ -4,7 +4,7 @@ use 5.8.1;
 use strict;
 use warnings;
 use File::BOM qw(open_bom);
-use Text::Textile '2.10';
+use Text::Textile 2.10;
 
 our $VERSION = '0.25';
 

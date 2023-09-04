@@ -133,9 +133,9 @@ This distribution includes support for a number of markup formats:
 
 =item * L<Markdown|https://daringfireball.net/projects/markdown/>
 
-=item * L<MultiMarkdown|https://fletcherpenney.net/multimarkdown/>
-
 =item * L<MediaWiki|https://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia>
+
+=item * L<MultiMarkdown|https://fletcherpenney.net/multimarkdown/>
 
 =item * L<Pod|perlpod>
 
