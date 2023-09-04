@@ -18,8 +18,12 @@ FIND: {
         File::Spec->path,
         WIN32 ? (map { "C:\\asciidoc$_" } '', '-8.6.6') : ()
     );
+    my @names = (
+        (map { (WIN32 ? ("$_.exe", "$_.bat") : ($_)) } qw(asciidoc)),
+        'asciidoc.py',
+    );
     EXE: {
-        for my $exe (qw(asciidoc asciidoc.py)) {
+        for my $exe (@names) {
             for my $p (@path) {
                 my $path = File::Spec->catfile($p, $exe);
                 next unless -f $path && -x $path;
@@ -32,8 +36,9 @@ FIND: {
     unless ($ASCIIDOC) {
         use Carp;
         my $sep = WIN32 ? ';' : ':';
+        my $list = join(', ', @names[0..$#names-1]) . ", or $names[-1]";
         Carp::croak(
-            "Cannot find asciidoc or asciidoc.py in path " . join $sep => @path
+            "Cannot find $list in path " . join $sep => @path
         );
     }
 
@@ -91,9 +96,8 @@ $html
 
 # Stolen from SVN::Notify.
 sub _fh {
-    # Ignored; looks like docutils always emits UTF-8.
     if (WIN32) {
-        my $cmd = join join(q{" "}, @_) . q{"|};
+        my $cmd = q{"} . join(q{" "}, @_) . q{"|};
         open my $fh, $cmd or die "Cannot fork: $!\n";
         return $fh;
     }

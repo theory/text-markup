@@ -126,7 +126,7 @@ sub parser {
 sub _fh {
     # Ignored; looks like docutils always emits UTF-8.
     if (WIN32) {
-        my $cmd = join join(q{" "}, @_) . q{"|};
+        my $cmd = q{"} . join(q{" "}, @_) . q{"|};
         open my $fh, $cmd or die "Cannot fork: $!\n";
         return $fh;
     }

@@ -24,6 +24,22 @@ my %filter_for = (
             if eval { CGI->VERSION >= 4.11 && CGI->VERSION < 4.14 };
         return shift;
     },
+    asciidoc => sub {
+        # For some reason the file handle decoder doesn't likt the ü output by
+        # asciidoc on Windows, and replaces it with hex. Which is weird, but
+        # whatever.
+        $_[0] =~ s/ü/\\xFC/ if $^O eq 'MSWin32';
+        shift;
+    },
+);
+
+my %parsed_filter_for = (
+    rest => sub {
+        # docutils space character before closing tag of XML declaration in Nov
+        # 2022 (https://github.com/docutils/docutils/commit/f93b895), so remove
+        # it when we run tests against older versions.
+        $_[0] =~ s/ \?>/\?>/;
+    },
 );
 
 my @loaded = Text::Markup->formats;
@@ -32,9 +48,16 @@ while (my $data = <DATA>) {
     chomp $data;
     my ($format, $module, $req, @exts) = split /,/ => $data;
     subtest "Testing $format format" => sub {
-        local $@;
-        eval "use $req; 1;" if $req;
-        plan skip_all => "$module not loading" if $@;
+        do {
+            local $@;
+            eval "use $req; 1;";
+            if ($@) {
+                die $@ if $ENV{TEXT_MARKUP_TEST_ALL}
+                    && !$ENV{"TEXT_MARKUP_SKIP_\U$format"};
+                plan skip_all => "$module not loading";
+            }
+        } if $req;
+
         plan tests => @exts + 5;
         use_ok $module or next;
 
@@ -54,18 +77,16 @@ while (my $data = <DATA>) {
             format => $format,
         );
 
+        if (my $f = $parsed_filter_for{$format}) {
+           $f->($html)
+        }
 
-        # docutils space character before closing tag of XML declaration in Nov
-        # 2022 (https://github.com/docutils/docutils/commit/f93b895), so remove
-        # it when we run tests against older versions.
-        $html =~ s/ \?>/\?>/ if $format eq 'rest';
         is $html, $expect, "Parse $format file";
 
         is $parser->parse(
             file   => catfile('t', 'empty.txt'),
             format => $format,
         ), undef, "Parse empty $format file";
-
     }
 }
 

@@ -4,7 +4,14 @@ Revision history for Perl extension Text-Markup.
     - Fixed the importation of Pod::Simple::XHTML and Text::Trac to use the
       correct syntax for requiring a minimum version. Thanks to Graham Knop
       for the PR (#27)!
-    - Fixed a test reStructuredText failure on newer versions of docutils.
+    - Fixed a reStructuredText test failure on newer versions of `docutils`.
+    - Moved development test dependencies from recommended prereqs to
+      development prereqs.
+    - Increased the minimum required Module::Build version to 0.4209.
+    - Added GitHub Workflows for testing and releasing and removed Travis
+      testing. Test on Perl 5.8 - 5.38 on Linux, macOS, an Windows.
+    - Fixed bugs executing Rest and Asciidoc on Windows.
+    - Updated Asciidoc ot find `asciidoc.bat` and `asciidoc.exe` on Windows.
 
 0.24  2019-12-12T00:53:25Z
      - Added missing `<head>` tag to all output. Thanks to Axel Beckert for
