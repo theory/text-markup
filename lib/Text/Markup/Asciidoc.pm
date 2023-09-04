@@ -12,49 +12,47 @@ use utf8;
 our $VERSION = '0.30';
 
 # Find Asciidoc.
-my $ASCIIDOC;
-FIND: {
-    my @path = (
-        File::Spec->path,
-        WIN32 ? (map { "C:\\asciidoc$_" } '', '-8.6.6') : ()
-    );
+sub _find_cli {
     my @names = (
-        (map { (WIN32 ? ("$_.exe", "$_.bat") : ($_)) } qw(asciidoc)),
+        (map {
+            (WIN32 ? ("$_.exe", "$_.bat") : ($_))
+        } qw(asciidoctor asciidoc)),
         'asciidoc.py',
     );
+    my $cli;
     EXE: {
         for my $exe (@names) {
-            for my $p (@path) {
+            for my $p (File::Spec->path) {
                 my $path = File::Spec->catfile($p, $exe);
                 next unless -f $path && -x $path;
-                $ASCIIDOC = $path;
+                $cli = $path;
                 last EXE;
             }
         }
     }
 
-    unless ($ASCIIDOC) {
+    unless ($cli) {
         use Carp;
         my $sep = WIN32 ? ';' : ':';
         my $list = join(', ', @names[0..$#names-1]) . ", or $names[-1]";
         Carp::croak(
-            "Cannot find $list in path " . join $sep => @path
+            "Cannot find $list in path " . join $sep => File::Spec->path
         );
     }
 
     # Make sure it looks like it will work.
     my $output = gensym;
-    my $pid = open3 undef, $output, $output, $ASCIIDOC, '--version';
+    my $pid = open3 undef, $output, $output, $cli, '--version';
     waitpid $pid, 0;
     if ($?) {
         use Carp;
         local $/;
-        Carp::croak(
-            qq{$ASCIIDOC will not execute\n},
-            <$output>
-        );
+        Carp::croak( qq{$cli will not execute\n}, <$output> );
     }
+    return $cli;
 }
+
+my $ASCIIDOC = _find_cli;
 
 # Arguments to pass to asciidoc.
 # Restore --safe if Asciidoc ever fixes it with the XHTML back end.
@@ -130,10 +128,12 @@ Text::Markup::Asciidoc - Asciidoc parser for Text::Markup
 
 =head1 Description
 
-This is the L<Asciidoc|https://asciidoc-py.github.io> parser for
-L<Text::Markup>. It depends on the C<asciidoc> command-line application,
-which See the L<installation docs|https://asciidoc-py.github.io/INSTALL.html>
-for details, or use the command C<pip install asciidoc>.
+This is the L<Asciidoc|https://asciidoc.org/> parser for L<Text::Markup>. It
+depends on the C<asciidoctor> command-line application; see the
+L<installation docs|https://asciidoctor.org/#installation> for details, or
+use the command C<gem install asciidoctor>. It falls back on the
+L<legacy C<asciidoc>|https://asciidoc-py.github.io> processor if
+C<asciidoctor> is not available.
 
 Text::Markup::Asciidoc recognizes files with the following extensions as
 Asciidoc:

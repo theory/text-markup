@@ -1,6 +1,11 @@
 Revision history for Perl extension Text-Markup.
 
 0.30
+    - The Asciidoc renderer now prefers `asciidoctor` if it's available, and
+      but falls back on `asciidoc` when it's not.
+    - Removed very old custom paths to `docutils` (reST) and `asciidoc`
+      binaries on Windows. Users must ensure that the proper commands are
+      in the PATH, instead.
 
 0.25  2023-09-04T22:20:13Z
     - Fixed the importation of Pod::Simple::XHTML, Text::Trac, Text::Textile,

@@ -123,7 +123,7 @@ This distribution includes support for a number of markup formats:
 
 =over
 
-=item * L<Asciidoc|https://asciidoc-py.github.io/>
+=item * L<Asciidoc|https://asciidoc.org>
 
 =item * L<BBcode|https://www.bbcode.org/>
 

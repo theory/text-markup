@@ -4,32 +4,46 @@ use strict;
 use warnings;
 use Test::More 0.96;
 use File::Spec::Functions qw(catfile);
+use File::Basename qw(basename);
 use Carp;
 
 # Need to have at least one test outside subtests, in case no subtests are run
 # at all. So it might as well be this.
 BEGIN { use_ok 'Text::Markup' or die; }
 
-sub slurp($$) {
-    my ($filter, $file) = @_;
-    $filter ||= sub { shift };
+sub slurp($) {
+    my ($file) = @_;
     open my $fh, '<:raw', $file or die "Cannot open $file: $!\n";
     local $/;
-    return $filter->(<$fh>);
+    return <$fh>;
 }
 
-my %filter_for = (
+my %expected_for = (
     mediawiki => sub {
-        $_[0] =~ s/ö/CGI::escapeHTML(do { use utf8; 'ö' })/e
+        my $html = slurp catfile('t', 'html', "mediawiki.html");
+        $html =~ s/ö/CGI::escapeHTML(do { use utf8; 'ö' })/e
             if eval { CGI->VERSION >= 4.11 && CGI->VERSION < 4.14 };
-        return shift;
+        return $html;
     },
     asciidoc => sub {
-        # For some reason the file handle decoder doesn't likt the ü output by
-        # asciidoc on Windows, and replaces it with hex. Which is weird, but
-        # whatever.
-        $_[0] =~ s/ü/\\xFC/ if $^O eq 'MSWin32';
-        shift;
+        my $cli = basename Text::Markup::Asciidoc::_find_cli();
+        my $exp_cli = $ENV{TEXT_MARKUP_TEST_ASCIIDOC} || '';
+        if ($cli =~ /\Aasciidoctor(?:[.](?:bat|exe|py))?\z/) {
+            die "Expected $exp_cli CLI but got $cli"
+                if $exp_cli && $exp_cli ne 'asciidoctor';
+            # asciidoctor CLI.
+            return slurp catfile('t', 'html', "asciidoctor.html");
+        }
+
+        if ($cli =~ /\Aasciidoc(?:[.](?:bat|exe|py))?\z/) {
+            die "Expected $exp_cli CLI but got $cli"
+                if $exp_cli && $exp_cli ne 'asciidoc';
+            # Legacy assciidoc.
+            my $html = slurp catfile('t', 'html', "asciidoc.html");
+            $html =~ s/ü/\\xFC/ if $^O eq 'MSWin32';
+            return $html;
+        }
+        die "Unknown Asciidoc CLI '$cli'";
     },
 );
 
@@ -71,16 +85,22 @@ while (my $data = <DATA>) {
                 "Should guess that .$ext extension is $format";
         }
 
-        my $expect = slurp $filter_for{$format}, catfile('t', 'html', "$format.html");
+        # Parse the markup.
         my $html = $parser->parse(
             file   => catfile('t', 'markups', "$format.txt"),
             format => $format,
         );
-
         if (my $f = $parsed_filter_for{$format}) {
            $f->($html)
         }
 
+        # Load the expected output.
+        my $loader = $expected_for{$format} ||= sub {
+            slurp catfile('t', 'html', "$format.html")
+        };
+        my $expect = $loader->();
+
+        # They should be the same!
         is $html, $expect, "Parse $format file";
 
         is $parser->parse(

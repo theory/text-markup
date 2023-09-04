@@ -14,12 +14,7 @@ our $VERSION = '0.30';
 # Find Python (process stolen from App::Info).
 my ($PYTHON, $RST2HTML);
 for my $exe (WIN32 ? 'python3.exe' : 'python3') {
-    my @path = (
-        File::Spec->path,
-        WIN32 ? (map { "C:\\Python$_" } '', 27, 26, 25) : ()
-    );
-
-    for my $p (@path) {
+    for my $p (File::Spec->path) {
         my $path = File::Spec->catfile($p, $exe);
         next unless -f $path && -x $path;
         $PYTHON = $path;
@@ -30,7 +25,7 @@ for my $exe (WIN32 ? 'python3.exe' : 'python3') {
         use Carp;
         my $sep = WIN32 ? ';' : ':';
         Carp::croak(
-            "Cannot find $exe in path " . join $sep => @path
+            "Cannot find $exe in path " . join $sep => File::Spec->path
         );
     }
 

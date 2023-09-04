@@ -13,11 +13,20 @@ jobs:
     runs-on: ${{ matrix.os.name }}-latest
     steps:
       - uses: actions/checkout@v4
+
+      # gem install asciidoctor fails on Linux without this.
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        if: ${{ matrix.os.name == 'ubuntu' }}
+        with: { ruby-version: '3.2' }
+
+      # Gonna need Perl, of course.
       - name: Setup Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
 
+      # Install Perl dependencies plus docutils (rest) and asciidoc.
       - name: Install Dependencies
         run: |
           perl -V
@@ -25,13 +34,25 @@ jobs:
           cpanm -v --notest --no-man-pages --installdeps --with-develop .
           pip3 install docutils asciidoc
 
+      # Require that we test the output of the legacy asciidoc CLI.
       - name: Test
         env:
           AUTHOR_TESTING: 1
           RELEASE_TESTING: 1
           TEXT_MARKUP_TEST_ALL: 1
+          TEXT_MARKUP_TEST_ASCIIDOC: asciidoc
         run: prove -lv
 
+      - name: Install Asciidoctor
+        run: gem install asciidoctor
+
+      # Require that we test the output of asciidoctor.
+      - name: Test Asciidoctor
+        env:
+          TEXT_MARKUP_TEST_ASCIIDOC: asciidoctor
+        run: prove -lv t/formats.t
+
+      #  Make sure we can build the distribution bundle.
       - name: Bundle
         run: |
           perl Build.PL

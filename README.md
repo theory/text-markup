@@ -8,7 +8,7 @@ This library's module, Text::Markup, provides an single interface for parsing
 a large number of text markup formats and converting them to HTML. It
 currently supports the following markups:
 
-*   [Asciidoc](https://asciidoc-py.github.io)
+*   [Asciidoc](https://asciidoc.org)
 *   [BBcode](https://www.bbcode.org)
 *   [Creole](https://www.wikicreole.org)
 *   [HTML](https://whatwg.org/html)
