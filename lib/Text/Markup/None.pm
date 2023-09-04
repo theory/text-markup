@@ -43,7 +43,7 @@ Text::Markup::None - Turn a file with no known markup into HTML
 
 This is the default parser used by Text::Markdown in the event that it cannot
 determine the format of a text file. All it does is read the file in (relying
-on a L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM>, encodes all
+on a L<BOM|https://www.unicode.org/unicode/faq/utf_bom.html#BOM>, encodes all
 entities, and then returns an HTML string with the file in a C<< <pre> >>
 element. This will be handy for files that really are nothing but plain text,
 like F<README> files.
@@ -58,7 +58,7 @@ David E. Wheeler <david@justatheory.com>
 
 =head1 Copyright and License
 
-Copyright (c) 2011-2019 David E. Wheeler. Some Rights Reserved.
+Copyright (c) 2011-2023 David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

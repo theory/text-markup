@@ -159,11 +159,11 @@ Text::Markup::Rest - reStructuredText parser for Text::Markup
 =head1 Description
 
 This is the
-L<reStructuredText|http://docutils.sourceforge.net/docs/user/rst/quickref.html>
-parser for L<Text::Markup>. It depends on the C<docutils> Python package
-(which can be found as C<python-docutils> in many Linux distributions, or
-installed using the command C<easy_install docutils>). It recognizes files
-with the following extensions as reST:
+L<reStructuredText|https://docutils.sourceforge.io/rst.html> parser for
+L<Text::Markup>. It depends on the C<docutils> Python package, which can be
+found as C<python3-docutils> in many Linux distributions, or installed using
+the command C<pip install docutils>. It recognizes files with the following
+extensions as reST:
 
 =over
 
@@ -179,7 +179,7 @@ Daniele Varrazzo <daniele.varrazzo@gmail.com>
 
 =head1 Copyright and License
 
-Copyright (c) 2011-2019 Daniele Varrazzo. Some Rights Reserved.
+Copyright (c) 2011-2023 Daniele Varrazzo. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

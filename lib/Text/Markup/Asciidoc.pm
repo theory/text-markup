@@ -130,11 +130,13 @@ Text::Markup::Asciidoc - Asciidoc parser for Text::Markup
 
 =head1 Description
 
-This is the L<Asciidoc|http://www.methods.co.nz/asciidoc/> parser for
-L<Text::Markup>. It depends on the C<asciidoc> command-line application, for
-which there are many
-L<binary distributions|http://www.methods.co.nz/asciidoc/INSTALL.html>. It
-recognizes files with the following extensions as Asciidoc:
+This is the L<Asciidoc|https://asciidoc-py.github.io> parser for
+L<Text::Markup>. It depends on the C<asciidoc> command-line application,
+which See the L<installation docs|https://asciidoc-py.github.io/INSTALL.html>
+for details, or use the command C<pip install asciidoc>.
+
+Text::Markup::Asciidoc recognizes files with the following extensions as
+Asciidoc:
 
 =over
 

@@ -43,9 +43,9 @@ Text::Markup::Markdown - Markdown parser for Text::Markup
 
 =head1 Description
 
-This is the L<Markdown|http://daringfireball.net/projects/markdown/> parser
+This is the L<Markdown|https://daringfireball.net/projects/markdown/> parser
 for L<Text::Markup>. It reads in the file (relying on a
-L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
+L<BOM|https://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
 L<Text::Markdown> for parsing, and then returns the generated HTML as an
 encoded UTF-8 string with an C<http-equiv="Content-Type"> element identifying
 the encoding as UTF-8.
@@ -72,8 +72,7 @@ the C<raw> option to C<parse>.
 
 =head1 See Also
 
-L<National Funk Congress Deadlocked On Get Up/Get Down
-Issue|http://www.theonion.com/articles/national-funk-congress-deadlocked-on-get-upget-dow,625/>.
+L<National Funk Congress Deadlocked On Get Up/Get Down Issue|https://www.theonion.com/national-funk-congress-deadlocked-on-get-up-get-down-is-1819565355>.
 MarkI<up> or MarkI<down>?
 
 =head1 Author
@@ -82,7 +81,7 @@ David E. Wheeler <david@justatheory.com>
 
 =head1 Copyright and License
 
-Copyright (c) 2011-2019 David E. Wheeler. Some Rights Reserved.
+Copyright (c) 2011-2023 David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

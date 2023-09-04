@@ -43,9 +43,9 @@ Text::Markup::Mediawiki - MediaWiki syntax parser for Text::Markup
 =head1 Description
 
 This is the L<MediaWiki
-syntax|http://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia> parser
+syntax|https://en.wikipedia.org/wiki/Help:Contents/Editing_Wikipedia> parser
 for L<Text::Markup>. It reads in the file (relying on a
-L<BOM|http://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
+L<BOM|https://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
 L<Text::MediawikiFormat> for parsing, and then returns the generated HTML as
 an encoded UTF-8 string with an C<http-equiv="Content-Type"> element
 identifying the encoding as UTF-8.
@@ -72,7 +72,7 @@ David E. Wheeler <david@justatheory.com>
 
 =head1 Copyright and License
 
-Copyright (c) 2011-2019 David E. Wheeler. Some Rights Reserved.
+Copyright (c) 2011-2023 David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
