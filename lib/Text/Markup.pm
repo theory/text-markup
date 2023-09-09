@@ -333,8 +333,8 @@ In such a case, read in the file as raw bytes:
 
 The returned HTML, however, B<must be encoded in UTF-8>. Please include an
 L<encoding
-declaration|https://en.wikipedia.org/wiki/Character_encodings_in_HTML>, such as
-a content-type C<< <meta> >> element:
+declaration|https://en.wikipedia.org/wiki/Character_encodings_in_HTML>, such
+as a content-type C<< <meta> >> element:
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 

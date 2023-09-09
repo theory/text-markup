@@ -54,6 +54,9 @@ my $build = $class->new(
         'Parse::BBCode'         => '0.15',
         'Text::WikiCreole'      => '0.07',
     },
+    recommmends => {
+        'CommonMark'            => '0.290000',
+    },
     meta_merge => {
          "meta-spec" => { version => 2 },
         resources => {

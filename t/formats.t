@@ -60,14 +60,14 @@ my @loaded = Text::Markup->formats;
 while (my $data = <DATA>) {
     next if $data =~ /^#/;
     chomp $data;
-    my ($format, $module, $req, @exts) = split /,/ => $data;
-    subtest "Testing $format format" => sub {
+    my ($name, $format, $module, $req, @exts) = split /,/ => $data;
+    subtest "Testing $name format" => sub {
         do {
             local $@;
             eval "use $req; 1;";
             if ($@) {
                 die $@ if $ENV{TEXT_MARKUP_TEST_ALL}
-                    && !$ENV{"TEXT_MARKUP_SKIP_\U$format"};
+                    && !$ENV{"TEXT_MARKUP_SKIP_\U$name"};
                 plan skip_all => "$module not loading";
             }
         } if $req;
@@ -87,41 +87,42 @@ while (my $data = <DATA>) {
 
         # Parse the markup.
         my $html = $parser->parse(
-            file   => catfile('t', 'markups', "$format.txt"),
+            file   => catfile('t', 'markups', "$name.txt"),
             format => $format,
         );
-        if (my $f = $parsed_filter_for{$format}) {
+        if (my $f = $parsed_filter_for{$name}) {
            $f->($html)
         }
 
         # Load the expected output.
-        my $loader = $expected_for{$format} ||= sub {
-            slurp catfile('t', 'html', "$format.html")
+        my $loader = $expected_for{$name} ||= sub {
+            slurp catfile('t', 'html', "$name.html")
         };
         my $expect = $loader->();
 
         # They should be the same!
-        is $html, $expect, "Parse $format file";
+        is $html, $expect, "Parse $name file";
 
         is $parser->parse(
             file   => catfile('t', 'empty.txt'),
             format => $format,
-        ), undef, "Parse empty $format file";
+        ), undef, "Parse empty $name file";
     }
 }
 
 done_testing;
 
 __DATA__
-# Format,Format Module,Required Module,extensions
-markdown,Text::Markup::Markdown,Text::Markdown 1.000004,md,mkdn,mkd,mdown,markdown
-html,Text::Markup::HTML,,html,htm,xhtml,xhtm
-pod,Text::Markup::Pod,Pod::Simple::XHTML 3.15,pod,pm,pl
-trac,Text::Markup::Trac,Text::Trac 0.10,trac,trc
-textile,Text::Markup::Textile,Text::Textile 2.10,textile
-mediawiki,Text::Markup::Mediawiki,Text::MediawikiFormat 1.0,wiki,mwiki,mediawiki
-multimarkdown,Text::Markup::Multimarkdown,Text::MultiMarkdown 1.000033,mmd,mmkdn,mmkd,mmdown,mmarkdown
-rest,Text::Markup::Rest,Text::Markup::Rest,rest,rst
-asciidoc,Text::Markup::Asciidoc,Text::Markup::Asciidoc,asciidoc,asc,adoc
-bbcode,Text::Markup::Bbcode,Parse::BBCode,bbcode,bb
-creole,Text::Markup::Creole,Text::WikiCreole,creole
+# Name,Format,Format Module,Required Module,extensions
+markdown,markdown,Text::Markup::Markdown,Text::Markdown 1.000004,md,mkdn,mkd,mdown,markdown
+commonmark,markdown,Text::Markup::CommonMark,CommonMark 0.290000,md,mkdn,mkd,mdown,markdown
+html,html,Text::Markup::HTML,,html,htm,xhtml,xhtm
+pod,pod,Text::Markup::Pod,Pod::Simple::XHTML 3.15,pod,pm,pl
+trac,trac,Text::Markup::Trac,Text::Trac 0.10,trac,trc
+textile,textile,Text::Markup::Textile,Text::Textile 2.10,textile
+mediawiki,mediawiki,Text::Markup::Mediawiki,Text::MediawikiFormat 1.0,wiki,mwiki,mediawiki
+multimarkdown,multimarkdown,Text::Markup::Multimarkdown,Text::MultiMarkdown 1.000033,mmd,mmkdn,mmkd,mmdown,mmarkdown
+rest,rest,Text::Markup::Rest,Text::Markup::Rest,rest,rst
+asciidoc,asciidoc,Text::Markup::Asciidoc,Text::Markup::Asciidoc,asciidoc,asc,adoc
+bbcode,bbcode,Text::Markup::Bbcode,Parse::BBCode,bbcode,bb
+creole,creole,Text::Markup::Creole,Text::WikiCreole,creole

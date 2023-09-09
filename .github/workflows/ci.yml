@@ -17,7 +17,7 @@ jobs:
       # gem install asciidoctor fails on Linux without this.
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
-        if: ${{ matrix.os.name == 'ubuntu' }}
+        if: runner.os == 'Linux'
         with: { ruby-version: '3.2' }
 
       # Gonna need Perl, of course.
@@ -34,28 +34,44 @@ jobs:
           cpanm -v --notest --no-man-pages --installdeps --with-develop .
           pip3 install docutils asciidoc
 
-      # Require that we test the output of the legacy asciidoc CLI.
+      # Testing default implmementations, ecluding AsciiDoctor and CommonMark.
       - name: Test
         env:
           AUTHOR_TESTING: 1
           RELEASE_TESTING: 1
           TEXT_MARKUP_TEST_ALL: 1
+          TEXT_MARKUP_SKIP_COMMONMARK: 1
           TEXT_MARKUP_TEST_ASCIIDOC: asciidoc
         run: prove -lv
 
       - name: Install Asciidoctor
         run: gem install asciidoctor
 
-      # Require that we test the output of asciidoctor.
-      - name: Test Asciidoctor
+      - name: Brew CommonMark
+        if: runner.os == 'macOS'
+        run: |
+          brew install cmark
+          cpanm -v --notest --no-man-pages CommonMark --configure-args="INC=-I'$(brew --prefix)/include' LIBS=-L'$(brew --prefix)/lib -lcmark'"
+
+      - name: Apt CommonMark
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install libcmark-dev
+          cpanm -v --notest --no-man-pages CommonMark
+
+      # Run author tests and test CommonMark and the output of asciidoctor.
+      - name: Test Overrides
         env:
           TEXT_MARKUP_TEST_ASCIIDOC: asciidoctor
-        run: prove -lv t/formats.t
+          TEXT_MARKUP_SKIP_COMMONMARK: ${{ matrix.os.name == 'windows' }}
+        run: prove -lv t
 
       #  Make sure we can build the distribution bundle.
-      - name: Bundle
+      - name: Test Distro
+        if: runner.os == 'Linux'
         run: |
+          prove -l xt
           perl Build.PL
           ./Build
           ./Build manifest
-          ./Build dist
+          ./Build disttest

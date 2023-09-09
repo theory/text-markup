@@ -6,6 +6,10 @@ Revision history for Perl extension Text-Markup.
     - Removed very old custom paths to `docutils` (reST) and `asciidoc`
       binaries on Windows. Users must ensure that the proper commands are
       in the PATH, instead.
+    - Added Text::Markdown::CommonMark, which uses the cmark library, via the
+      CommonMark module. Text::Markdown will not use this formatter by
+      default, but when explicitly loaded will be used instead of
+      Text::Markup::Markdown.
 
 0.25  2023-09-04T22:20:13Z
     - Fixed the importation of Pod::Simple::XHTML, Text::Trac, Text::Textile,

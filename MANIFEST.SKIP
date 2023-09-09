@@ -29,8 +29,8 @@
 ^Text-Markup
 ^[.]travis.yml
 
-# Avoid Pod tests.
-t/pod[^.]*\.t
+# Avoid extra tests.
+^xt/
 
 ^MYMETA.yml$
 ^MYMETA\.json$

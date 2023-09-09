@@ -12,8 +12,7 @@ sub parser {
     my ($file, $encoding, $opts) = @_;
     my $md = Text::Markdown->new(@{ $opts || [] });
     open_bom my $fh, $file, ":encoding($encoding)";
-    local $/;
-    my $html = $md->markdown(<$fh>);
+    my $html = $md->markdown(join '', <$fh>);
     return unless $html =~ /\S/;
     utf8::encode($html);
     return $html if $opts->{raw};
