@@ -1,4 +1,4 @@
-Text/Markup version 0.31
+Text/Markup version 0.32
 ========================
 
 [![CPAN version](https://badge.fury.io/pl/Text-Markup.svg)](https://badge.fury.io/pl/Text-Markup)

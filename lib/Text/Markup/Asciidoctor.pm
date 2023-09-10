@@ -6,7 +6,7 @@ use warnings;
 use Text::Markup::Cmd;
 use utf8;
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 
 # Replace Text::Markup::Asciidoc.
 Text::Markup->register( asciidoc => qr{a(?:sc(?:iidoc)?|doc)?} );

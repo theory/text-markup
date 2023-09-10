@@ -7,7 +7,7 @@ use CommonMark;
 use Text::Markup;
 use File::BOM qw(open_bom);
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 
 # Replace Text::Markup::Markdown.
 Text::Markup->register( markdown => qr{m(?:d(?:own)?|kdn?|arkdown)} );

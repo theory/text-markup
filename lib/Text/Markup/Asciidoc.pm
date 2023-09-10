@@ -6,7 +6,7 @@ use warnings;
 use Text::Markup::Cmd;
 use utf8;
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 
 my $ASCIIDOC = find_cmd([
     (map { (WIN32 ? ("$_.exe", "$_.bat") : ($_)) } qw(asciidoc)),
