@@ -15,15 +15,15 @@ Text::Markup->register( markdown => qr{m(?:d(?:own)?|kdn?|arkdown)} );
 sub parser {
     my ($file, $encoding, $opts) = @_;
     open_bom my $fh, $file, ":encoding($encoding)";
-    my $cmark_opts = CommonMark::_extract_opts({
+    my $html = CommonMark->parse(
+        string => join( '', <$fh>),
         smart  => 1,
         unsafe => 1,
-        @{ $opts || [] },
-    });
-    my $html = CommonMark->parse_document(
-        join( '', <$fh>),
-        $cmark_opts
-    )->render_html($cmark_opts);
+        %{ $opts },
+    )->render(
+        format => 'html',
+        %{ $opts },
+    );
     return unless $html =~ /\S/;
     utf8::encode($html);
     return $html if $opts->{raw};
