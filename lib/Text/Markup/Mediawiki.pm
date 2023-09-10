@@ -12,10 +12,10 @@ sub parser {
     my ($file, $encoding, $opts) = @_;
     open_bom my $fh, $file, ":encoding($encoding)";
     local $/;
-    my $html = Text::MediawikiFormat::format(<$fh>, @{ $opts || [] });
+    my $html = Text::MediawikiFormat::format(<$fh>, @{ $opts });
     return unless $html =~ /\S/;
     utf8::encode($html);
-    return $html if $opts->{raw};
+    return $html if $opts->[1] && $opts->[1]->{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -38,7 +38,10 @@ Text::Markup::Mediawiki - MediaWiki syntax parser for Text::Markup
 =head1 Synopsis
 
   my $html = Text::Markup->new->parse(file => 'README.mediawiki');
-  my $raw  = Text::Markup->new->parse(file => 'README.mediawiki', raw => 1);
+  my $raw  = Text::Markup->new->parse(
+      file    => 'README.mediawiki',
+      options => [ {}, { raw => 1 } ],
+  );
 
 =head1 Description
 
@@ -60,11 +63,31 @@ It recognizes files with the following extensions as MediaWiki:
 
 =item F<.wiki>
 
-Normally this module returns the output wrapped in a minimal HTML document
-skeleton. If you would like the raw output without the skeleton, you can pass
-the C<raw> option to C<parse>.
+=back
+
+
+Text::Markup::Mediawiki supports the two
+L<Text::MediawikiFormat arguments|Text::MediawikiFormat/format>, a hash
+reference for tags and a hash reference of options. The supported options
+include:
+
+=over
+
+=item C<prefix>
+
+=item C<extended>
+
+=item C<implicit_links>
+
+=item C<absolute_links>
+
+=item C<process_html>
 
 =back
+
+Normally this module returns the output wrapped in a minimal HTML document
+skeleton. If you would like the raw output without the skeleton, you can pass
+the C<raw> option via that second hash reference of options.
 
 =head1 Author
 

@@ -62,7 +62,7 @@ sub parse {
     return $parser->(
         $file,
         $p{encoding} || $self->default_encoding,
-        $p{options}
+        $p{options} || [],
     );
 }
 

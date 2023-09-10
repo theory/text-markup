@@ -15,18 +15,16 @@ Text::Markup->register( markdown => qr{m(?:d(?:own)?|kdn?|arkdown)} );
 sub parser {
     my ($file, $encoding, $opts) = @_;
     open_bom my $fh, $file, ":encoding($encoding)";
+    my %params = @{ $opts };
     my $html = CommonMark->parse(
-        string => join( '', <$fh>),
         smart  => 1,
         unsafe => 1,
-        %{ $opts },
-    )->render(
-        format => 'html',
-        %{ $opts },
-    );
+        %params,
+        string => join( '', <$fh>),
+    )->render(  %params, format => 'html' );
     return unless $html =~ /\S/;
     utf8::encode($html);
-    return $html if $opts->{raw};
+    return $html if $params{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -50,7 +48,10 @@ Text::Markup::CommonMark - CommonMark Markdown parser for Text::Markup
 
   use Text::Markup::CommonMark;
   my $html = Text::Markup->new->parse(file => 'README.md');
-  my $raw  = Text::Markup->new->parse(file => 'README.md', raw => 1);
+  my $raw  = Text::Markup->new->parse(
+      file    => 'README.md',
+      options => [ raw => 1 ],
+  );
 
 =head1 Description
 
@@ -66,7 +67,29 @@ L<CommonMark> for parsing, and then returns the generated HTML as an
 encoded UTF-8 string with an C<http-equiv="Content-Type"> element identifying
 the encoding as UTF-8.
 
-Supported boolean options to pass to the C<parse()> method are:
+It recognizes files with the following extensions as CommonMark Markdown:
+
+=over
+
+=item F<.md>
+
+=item F<.mkd>
+
+=item F<.mkdn>
+
+=item F<.mdown>
+
+=item F<.markdown>
+
+=back
+
+Normally this module returns the output wrapped in a minimal HTML document
+skeleton. If you would like the raw output without the skeleton, you can pass
+the C<raw> option to C<parse>.
+
+In addition Text::CommonMark supports all of the CommonMark
+L<parse options|CommonMark/parse> and L<render options|CommonMark::Node/render>,
+including:
 
 =over
 
@@ -101,26 +124,6 @@ C<image/webp> mime types). Raw HTML is replaced by a placeholder HTML comment.
 Unsafe links are replaced by empty strings. Enabled by default.
 
 =back
-
-It recognizes files with the following extensions as CommonMark Markdown:
-
-=over
-
-=item F<.md>
-
-=item F<.mkd>
-
-=item F<.mkdn>
-
-=item F<.mdown>
-
-=item F<.markdown>
-
-=back
-
-Normally this module returns the output wrapped in a minimal HTML document
-skeleton. If you would like the raw output without the skeleton, you can pass
-the C<raw> option to C<parse>.
 
 =head1 Author
 

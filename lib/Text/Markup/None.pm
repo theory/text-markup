@@ -14,7 +14,7 @@ sub parser {
     local $/;
     my $html = encode_entities(<$fh>, '<>&"');
     utf8::encode($html);
-    return $html if $opts->{raw};
+    return $html if { @{ $opts } }->{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -37,7 +37,10 @@ Text::Markup::None - Turn a file with no known markup into HTML
 
   use Text::Markup;
   my $html = Text::Markup->new->parse(file => 'README');
-  my $raw  = Text::Markup->new->parse(file => 'README', raw => 1);
+  my $raw  = Text::Markup->new->parse(
+      file    => 'README',
+      options => [ raw => 1 ],
+  );
 
 =head1 Description
 

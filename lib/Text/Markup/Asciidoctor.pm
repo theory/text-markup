@@ -43,7 +43,7 @@ sub parser {
     # Make sure we have something.
     return unless $html =~ /\S/;
     utf8::encode $html;
-    return $html if $opts->{raw};
+    return $html if { @{ $opts } }->{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -65,7 +65,10 @@ Text::Markup::Asciidoc - Asciidoc parser for Text::Markup
 
   use Text::Markup::Asciidoctor;
   my $html = Text::Markup->new->parse(file => 'hello.adoc');
-  my $raw_asciidoc = Text::Markup->new->parse(file => 'hello.adoc', raw => 1 );
+  my $raw = Text::Markup->new->parse(
+      file    => 'hello.adoc',
+      options => [raw => 1],
+  );
 
 =head1 Description
 

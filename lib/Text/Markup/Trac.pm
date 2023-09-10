@@ -10,13 +10,14 @@ our $VERSION = '0.31';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
-    my $trac = Text::Trac->new(@{ $opts || [] });
+    my %params = @{ $opts };
+    my $trac = Text::Trac->new(%params);
     open_bom my $fh, $file, ":encoding($encoding)";
     local $/;
     my $html = $trac->parse(<$fh>);
     return unless $html =~ /\S/;
     utf8::encode($html);
-    return $html if $opts->{raw};
+    return $html if $params{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -39,7 +40,10 @@ Text::Markup::Trac - Trac wiki syntax parser for Text::Markup
 =head1 Synopsis
 
   my $html = Text::Markup->new->parse(file => 'README.trac');
-  my $raw  = Text::Markup->new->parse(file => 'README.trac', raw => 1);
+  my $raw  = Text::Markup->new->parse(
+      file => 'README.trac',
+      options => [ raw => 1 ],
+  );
 
 =head1 Description
 
@@ -63,6 +67,19 @@ It recognizes files with the following extensions as Trac:
 Normally this module returns the output wrapped in a minimal HTML document
 skeleton. If you would like the raw output without the skeleton, you can pass
 the C<raw> option to C<parse>.
+
+In addition, Text::Markup::Mediawiki supports all of the
+L<Text::Trac options|Text::Trac/new>, including:
+
+=over
+
+=item C<trac_url>
+
+=item C<disable_links>
+
+=item C<enable_links>
+
+=back
 
 =head1 Author
 

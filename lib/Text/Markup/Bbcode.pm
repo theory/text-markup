@@ -10,13 +10,14 @@ our $VERSION = '0.31';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
-    my $parse = Parse::BBCode->new;
+    my %params = @{ $opts };
+    my $parse = Parse::BBCode->new(\%params);
     open_bom my $fh, $file, ":encoding($encoding)";
     local $/;
     my $html = $parse->render(<$fh>);
     return unless $html =~ /\S/;
     utf8::encode($html);
-    return $html if $opts->{raw};
+    return $html if $params{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -39,7 +40,10 @@ Text::Markup::Bbcode - BBcode parser for Text::Markup
 =head1 Synopsis
 
   my $html = Text::Markup->new->parse(file => 'file.bbcode');
-  my $raw  = Text::Markup->new->parse(file => 'file.bbcode', raw => 1);
+  my $raw  = Text::Markup->new->parse(
+      file => 'file.bbcode',
+      options => [ raw => 1 ],
+  );
 
 =head1 Description
 
@@ -63,6 +67,37 @@ It recognizes files with the following extensions as Markdown:
 Normally this module returns the output wrapped in a minimal HTML document
 skeleton. If you would like the raw output with the raw skeleton, you can pass
 the C<raw> option to C<parse>.
+
+In addition Text::Markup::Bbcode supports all of the
+L<Parse::BBCode options|Parse::BBCode/METHODS>, including:
+
+=over
+
+=item C<tags>
+
+=item C<escapes>
+
+=item C<url_finder>
+
+=item C<smileys>
+
+=item C<linebreaks>
+
+=item C<text_processor>
+
+=item C<close_open_tags>
+
+=item C<strict_attributes>
+
+=item C<direct_attributes>
+
+=item C<attribute_quote>
+
+=item C<attribute_parser>
+
+=item C<strip_linebreaks>
+
+=back
 
 =head1 Author
 

@@ -10,18 +10,19 @@ our $VERSION = '0.31';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
+    my %params = @{ $opts };
     my $textile = Text::Textile->new(
         charset       => 'utf-8',
         char_encoding => 0,
         trim_spaces   => 1,
-        @{ $opts || [] }
+        %params,
     );
     open_bom my $fh, $file, ":encoding($encoding)";
     local $/;
     my $html = $textile->process(<$fh>);
     return unless $html =~ /\S/;
     utf8::encode($html);
-    return $html if $opts->{raw};
+    return $html if $params{raw};
     return qq{<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -44,7 +45,10 @@ Text::Markup::Textile - Textile parser for Text::Markup
 =head1 Synopsis
 
   my $html = Text::Markup->new->parse(file => 'README.textile');
-  my $raw  = Text::Markup->new->parse(file => 'README.textile', raw => 1);
+  my $raw  = Text::Markup->new->parse(
+      file    => 'README.textile',
+      options => [ raw => 1 ],
+  );
 
 =head1 Description
 
@@ -66,6 +70,37 @@ It recognizes files with the following extension as Textile:
 Normally this module returns the output wrapped in a minimal HTML document
 skeleton. If you would like the raw output without the skeleton, you can pass
 the C<raw> option to C<parse>.
+
+In addition, Text::Markup::Mediawiki supports all of the
+L<Text::Textile options|Text::Textile/METHODS>, including:
+
+=over
+
+=item C<disable_html>
+
+=item C<flavor>
+
+=item C<css>
+
+=item C<charset>
+
+=item C<docroot>
+
+=item C<trim_spaces>
+
+=item C<preserve_spaces>
+
+=item C<filter_param>
+
+=item C<filters>
+
+=item C<char_encoding>
+
+=item C<disable_encode_entities>
+
+=item C<handle_quotes>
+
+=back
 
 =head1 Author
 

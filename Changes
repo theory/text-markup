@@ -1,6 +1,8 @@
 Revision history for Perl extension Text-Markup.
 
 0.31
+    - Fixed the passing of parameters to `parse()`.
+    - Documented the parameters passable to `parse()` for each parser.
 
 0.30  2023-09-10T16:42:18Z
     - Removed very old custom paths to `docutils` (reST) and `asciidoc`
