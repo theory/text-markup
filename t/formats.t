@@ -5,6 +5,7 @@ use warnings;
 use Test::More 0.96;
 use File::Spec::Functions qw(catfile);
 use File::Basename qw(basename);
+use Text::Markup::Cmd;
 use Carp;
 
 # Need to have at least one test outside subtests, in case no subtests are run
@@ -26,24 +27,9 @@ my %expected_for = (
         return $html;
     },
     asciidoc => sub {
-        my $cli = basename Text::Markup::Asciidoc::_find_cli();
-        my $exp_cli = $ENV{TEXT_MARKUP_TEST_ASCIIDOC} || '';
-        if ($cli =~ /\Aasciidoctor(?:[.](?:bat|exe|py))?\z/) {
-            die "Expected $exp_cli CLI but got $cli"
-                if $exp_cli && $exp_cli ne 'asciidoctor';
-            # asciidoctor CLI.
-            return slurp catfile('t', 'html', "asciidoctor.html");
-        }
-
-        if ($cli =~ /\Aasciidoc(?:[.](?:bat|exe|py))?\z/) {
-            die "Expected $exp_cli CLI but got $cli"
-                if $exp_cli && $exp_cli ne 'asciidoc';
-            # Legacy assciidoc.
-            my $html = slurp catfile('t', 'html', "asciidoc.html");
-            $html =~ s/ü/\\xFC/ if $^O eq 'MSWin32';
-            return $html;
-        }
-        die "Unknown Asciidoc CLI '$cli'";
+        my $html = slurp catfile('t', 'html', "asciidoc.html");
+        $html =~ s/ü/\\xFC/ if WIN32;
+        return $html;
     },
 );
 
@@ -68,7 +54,7 @@ while (my $data = <DATA>) {
             if ($@) {
                 die $@ if $ENV{TEXT_MARKUP_TEST_ALL}
                     && !$ENV{"TEXT_MARKUP_SKIP_\U$name"};
-                plan skip_all => "$module not loading";
+                plan skip_all => "$req not loading: $@";
             }
         } if $req;
 
@@ -124,5 +110,6 @@ mediawiki,mediawiki,Text::Markup::Mediawiki,Text::MediawikiFormat 1.0,wiki,mwiki
 multimarkdown,multimarkdown,Text::Markup::Multimarkdown,Text::MultiMarkdown 1.000033,mmd,mmkdn,mmkd,mmdown,mmarkdown
 rest,rest,Text::Markup::Rest,Text::Markup::Rest,rest,rst
 asciidoc,asciidoc,Text::Markup::Asciidoc,Text::Markup::Asciidoc,asciidoc,asc,adoc
+asciidoctor,asciidoc,Text::Markup::Asciidoctor,Text::Markup::Asciidoctor,asciidoc,asc,adoc
 bbcode,bbcode,Text::Markup::Bbcode,Parse::BBCode,bbcode,bb
 creole,creole,Text::Markup::Creole,Text::WikiCreole,creole

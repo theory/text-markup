@@ -21,14 +21,21 @@ can_ok 'Text::Markup' => qw(
 # Find core parsers.
 my $dir = catdir qw(lib Text Markup);
 opendir my $dh, $dir or die "Cannot open diretory $dir: $!\n";
-my @core_parsers;
-while (my $f = readdir $dh) {
-    next if $f eq '.' || $f eq '..' || $f eq 'None.pm' || $f eq 'CommonMark.pm';
-    $f =~ s{[.]pm$}{} or next;
-    push @core_parsers => lc $f;
-}
+my @core_parsers = sort qw(
+    creole
+    mediawiki
+    html
+    rest
+    pod
+    bbcode
+    markdown
+    textile
+    asciidoc
+    multimarkdown
+    trac
+);
 
-is_deeply [Text::Markup->formats], [sort @core_parsers],
+is_deeply [Text::Markup->formats], \@core_parsers,
     'Should have core formats';
 
 ok my %matchers = Text::Markup->format_matchers,

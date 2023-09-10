@@ -60,7 +60,7 @@ parser for parsing L<Markdown|https://daringfireball.net/projects/markdown/>.
 Note that L<Text::Markup> does not load this module by default, but when
 loaded manually will be the preferred Markdown parser.
 
-The parse reads in the file (relying on a
+Text::Markup::CommonMark reads in the file (relying on a
 L<BOM|https://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
 L<CommonMark> for parsing, and then returns the generated HTML as an
 encoded UTF-8 string with an C<http-equiv="Content-Type"> element identifying

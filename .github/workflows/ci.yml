@@ -33,19 +33,7 @@ jobs:
           cpanm -v --notest --no-man-pages Module::Build Archive::Tar ExtUtils::PL2Bat
           cpanm -v --notest --no-man-pages --installdeps --with-develop .
           pip3 install docutils asciidoc
-
-      # Testing default implmementations, ecluding AsciiDoctor and CommonMark.
-      - name: Test
-        env:
-          AUTHOR_TESTING: 1
-          RELEASE_TESTING: 1
-          TEXT_MARKUP_TEST_ALL: 1
-          TEXT_MARKUP_SKIP_COMMONMARK: 1
-          TEXT_MARKUP_TEST_ASCIIDOC: asciidoc
-        run: prove -lv
-
-      - name: Install Asciidoctor
-        run: gem install asciidoctor
+          gem install asciidoctor
 
       - name: Brew CommonMark
         if: runner.os == 'macOS'
@@ -59,12 +47,14 @@ jobs:
           sudo apt-get install libcmark-dev
           cpanm -v --notest --no-man-pages CommonMark
 
-      # Run author tests and test CommonMark and the output of asciidoctor.
-      - name: Test Overrides
+      # Testing default implmementations, excluding AsciiDoctor and CommonMark.
+      - name: Test
         env:
-          TEXT_MARKUP_TEST_ASCIIDOC: asciidoctor
+          AUTHOR_TESTING: 1
+          RELEASE_TESTING: 1
+          TEXT_MARKUP_TEST_ALL: 1
           TEXT_MARKUP_SKIP_COMMONMARK: ${{ matrix.os.name == 'windows' }}
-        run: prove -lv t
+        run: prove -lv
 
       #  Make sure we can build the distribution bundle.
       - name: Test Distro

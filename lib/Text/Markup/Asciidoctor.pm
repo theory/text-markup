@@ -1,4 +1,4 @@
-package Text::Markup::Asciidoc;
+package Text::Markup::Asciidoctor;
 
 use 5.8.1;
 use strict;
@@ -8,9 +8,13 @@ use utf8;
 
 our $VERSION = '0.30';
 
+# Replace Text::Markup::Asciidoc.
+Text::Markup->register( asciidoc => qr{a(?:sc(?:iidoc)?|doc)?} );
+
+# Find Asciidoc.
 my $ASCIIDOC = find_cmd([
-    (map { (WIN32 ? ("$_.exe", "$_.bat") : ($_)) } qw(asciidoc)),
-    'asciidoc.py',
+    (map { (WIN32 ? ("$_.exe", "$_.bat") : ($_)) } qw(asciidoctor)),
+    'asciidoctor.py',
 ], '--version');
 
 # Arguments to pass to asciidoc.
@@ -50,7 +54,6 @@ $html
 </html>
 };
 }
-
 1;
 __END__
 
@@ -60,18 +63,26 @@ Text::Markup::Asciidoc - Asciidoc parser for Text::Markup
 
 =head1 Synopsis
 
-  use Text::Markup;
+  use Text::Markup::Asciidoctor;
   my $html = Text::Markup->new->parse(file => 'hello.adoc');
   my $raw_asciidoc = Text::Markup->new->parse(file => 'hello.adoc', raw => 1 );
 
 =head1 Description
 
 This is the L<Asciidoc|https://asciidoc.org/> parser for L<Text::Markup>. It
-depends on the L<C<asciidoc>|https://asciidoc-py.github.io> command-line
-application. See the L<installation docs|https://asciidoc-py.github.io/INSTALL.html>
-for details, or use the command C<pip3 install asciidoc>.
+depends on the C<asciidoctor> command-line application; see the
+L<installation docs|https://asciidoctor.org/#installation> for details, or
+use the command C<gem install asciidoctor>. Note that L<Text::Markup> does
+not load this module by default, but when loaded manually will replace
+Text::Markup::Asciidoc as preferred Asciidoc parser.
 
-Text::Markup::Asciidoc recognizes files with the following extensions as
+Text::Markup::Asciidoctor reads in the file (relying on a
+L<BOM|https://www.unicode.org/unicode/faq/utf_bom.html#BOM>), hands it off to
+L<C<asciidoctor>|https://asciidoctor.org> for parsing, and then returns the
+generated HTML as an encoded UTF-8 string with an C<http-equiv="Content-Type">
+element identifying the encoding as UTF-8.
+
+Text::Markup::Asciidoctor recognizes files with the following extensions as
 Asciidoc:
 
 =over
@@ -84,9 +95,9 @@ Asciidoc:
 
 =back
 
-Normally this parser returns the output of C<asciidoc> wrapped in a minimal
+Normally this parser returns the output of C<asciidoctor> wrapped in a minimal
 HTML page skeleton. If you would prefer to just get the exact output returned
-by C<asciidoc>, you can pass in a true value for the C<raw> option.
+by C<asciidoctor>, you can pass in a true value for the C<raw> option.
 
 =head1 Author
 

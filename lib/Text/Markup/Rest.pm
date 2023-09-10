@@ -3,63 +3,30 @@ package Text::Markup::Rest;
 use 5.8.1;
 use strict;
 use warnings;
-use File::Spec;
-use File::Basename ();
-use constant WIN32  => $^O eq 'MSWin32';
-use Symbol 'gensym';
-use IPC::Open3;
+use Text::Markup::Cmd;
+use File::Basename;
 
 our $VERSION = '0.30';
 
-# Find Python (process stolen from App::Info).
-my ($PYTHON, $RST2HTML);
-for my $exe (WIN32 ? 'python3.exe' : 'python3') {
-    for my $p (File::Spec->path) {
-        my $path = File::Spec->catfile($p, $exe);
-        next unless -f $path && -x $path;
-        $PYTHON = $path;
-        last;
-    }
+# Find Python or die.
+my $PYTHON = find_cmd(
+    [WIN32 ? 'python3.exe' : 'python3'],
+    '--version',
+);
 
-    unless ($PYTHON) {
-        use Carp;
-        my $sep = WIN32 ? ';' : ':';
-        Carp::croak(
-            "Cannot find $exe in path " . join $sep => File::Spec->path
-        );
-    }
+# We have python, let's find out if we have docutils.
+exec_or_die(
+    qq{Missing required Python "docutils" module},
+    $PYTHON, '-c', 'import docutils',
+);
 
-    # We have python, let's find out if we have docutils.
-    my $output = gensym;
-    my $pid = open3 undef, $output, $output, $PYTHON, '-c', 'import docutils';
-    waitpid $pid, 0;
-    if ($?) {
-        use Carp;
-        local $/;
-        Carp::croak(
-            qq{Missing required Python "docutils" module\n},
-            <$output>
-        );
-    }
+# We ship with our own rst2html that's lenient with unknown directives.
+my $RST2HTML = File::Spec->catfile(dirname(__FILE__), 'rst2html_lenient.py');
 
-    # We ship with our own rst2html that's lenient with unknown directives.
-    $RST2HTML = File::Spec->catfile(
-        File::Basename::dirname(__FILE__),
-        'rst2html_lenient.py'
-    );
-
-    # Make sure it looks like it will work.
-    $pid = open3 undef, $output, $output, $PYTHON, $RST2HTML, '--test-patch';
-    waitpid $pid, 0;
-    if ($?) {
-        use Carp;
-        local $/;
-        Carp::croak(
-            qq{$RST2HTML will not execute\n},
-            <$output>
-        );
-    }
-}
+exec_or_die(
+    "$RST2HTML will not execute",
+    $PYTHON, $RST2HTML, '--test-patch',
+);
 
 # Optional arguments to pass to rst2html
 my @OPTIONS = qw(
@@ -98,7 +65,7 @@ my @SPHINX_OPTIONS = qw(
 sub parser {
     my ($file, $encoding, $opts) = @_;
     my $html = do {
-        my $fh = _fh(
+        my $fh = open_pipe(
             $PYTHON, $RST2HTML,
             @OPTIONS, @SPHINX_OPTIONS,
             '--input-encoding', $encoding,
@@ -115,28 +82,6 @@ sub parser {
     $html =~ s{^\s*<meta\s+name\s*=\s*(['"])generator\1[^>]+>\n}{}ms;
 
     return $html;
-}
-
-# Stolen from SVN::Notify.
-sub _fh {
-    # Ignored; looks like docutils always emits UTF-8.
-    if (WIN32) {
-        my $cmd = q{"} . join(q{" "}, @_) . q{"|};
-        open my $fh, $cmd or die "Cannot fork: $!\n";
-        return $fh;
-    }
-
-    my $pid = open my $fh, '-|';
-    die "Cannot fork: $!\n" unless defined $pid;
-
-    if ($pid) {
-        # Parent process, return the file handle.
-        return $fh;
-    } else {
-        # Child process. Execute the commands.
-        exec @_ or die "Cannot exec $_[0]: $!\n";
-        # Not reached.
-    }
 }
 
 1;
