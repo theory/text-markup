@@ -6,7 +6,7 @@ use warnings;
 use Text::Markup::Cmd;
 use File::Basename;
 
-our $VERSION = '0.30';
+our $VERSION = '0.31';
 
 # Find Python or die.
 my $PYTHON = find_cmd(

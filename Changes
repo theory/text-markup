@@ -1,5 +1,7 @@
 Revision history for Perl extension Text-Markup.
 
+0.31
+
 0.30  2023-09-10T16:42:18Z
     - Removed very old custom paths to `docutils` (reST) and `asciidoc`
       binaries on Windows. Users must ensure that the proper commands are

@@ -6,7 +6,7 @@ use warnings;
 use File::BOM qw(open_bom);
 use Text::MultiMarkdown ();
 
-our $VERSION = '0.30';
+our $VERSION = '0.31';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
