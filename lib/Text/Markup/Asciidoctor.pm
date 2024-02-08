@@ -3,13 +3,16 @@ package Text::Markup::Asciidoctor;
 use 5.8.1;
 use strict;
 use warnings;
+use Text::Markup;
 use Text::Markup::Cmd;
 use utf8;
 
 our $VERSION = '0.32';
 
-# Replace Text::Markup::Asciidoc.
-Text::Markup->register( asciidoc => qr{a(?:sc(?:iidoc)?|doc)?} );
+sub import {
+    # Replace Text::Markup::Asciidoc.
+    Text::Markup->register( asciidoc => $_[1] || qr{a(?:sc(?:iidoc)?|doc)?} );
+}
 
 # Find Asciidoc.
 my $ASCIIDOC = find_cmd([
@@ -97,6 +100,11 @@ Asciidoc:
 =item F<.adoc>
 
 =back
+
+To change it the files it recognizes, load this module directly and pass a
+regular expression matching the desired extension(s), like so:
+
+  use Text::Markup::AsciiDoctor qr{ski?doc};
 
 Normally this parser returns the output of C<asciidoctor> wrapped in a minimal
 HTML page skeleton. If you would prefer to just get the exact output returned

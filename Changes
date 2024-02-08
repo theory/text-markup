@@ -1,6 +1,8 @@
 Revision history for Perl extension Text-Markup.
 
 0.32
+    - Added the ability to change the regular expression for a format by
+      passing it in the `use` statement.
 
 0.31  2023-09-10T23:24:43Z
     - Fixed the passing of parameters to `parse()`.

@@ -3,7 +3,13 @@ package Text::Markup::Pod;
 use 5.8.1;
 use strict;
 use warnings;
+use Text::Markup;
 use Pod::Simple::XHTML 3.15;
+
+sub import {
+    # Replace the regex if passed one.
+    Text::Markup->register( pod => $_[1] ) if $_[1];
+}
 
 # Disable the use of HTML::Entities.
 $Pod::Simple::XHTML::HAS_HTML_ENTITIES = 0;
@@ -59,6 +65,11 @@ extensions as Pod:
 =item F<.pl>
 
 =back
+
+To change it the files it recognizes, load this module directly and pass a
+regular expression matching the desired extension(s), like so:
+
+  use Text::Markup::Pod qr{cgi};
 
 =head1 Options
 

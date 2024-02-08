@@ -3,10 +3,16 @@ package Text::Markup::Asciidoc;
 use 5.8.1;
 use strict;
 use warnings;
+use Text::Markup;
 use Text::Markup::Cmd;
 use utf8;
 
 our $VERSION = '0.32';
+
+sub import {
+    # Replace the regex if passed one.
+    Text::Markup->register( asciidoc => $_[1] ) if $_[1];
+}
 
 my $ASCIIDOC = find_cmd([
     (map { (WIN32 ? ("$_.exe", "$_.bat") : ($_)) } qw(asciidoc)),
@@ -86,6 +92,11 @@ Asciidoc:
 =item F<.adoc>
 
 =back
+
+To change it the files it recognizes, load this module directly and pass a
+regular expression matching the desired extension(s), like so:
+
+  use Text::Markup::Asciidoc qr{ski?doc};
 
 Normally this parser returns the output of C<asciidoc> wrapped in a minimal
 HTML page skeleton. If you would prefer to just get the exact output returned

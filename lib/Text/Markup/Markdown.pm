@@ -3,10 +3,16 @@ package Text::Markup::Markdown;
 use 5.8.1;
 use strict;
 use warnings;
+use Text::Markup;
 use File::BOM qw(open_bom);
 use Text::Markdown ();
 
 our $VERSION = '0.32';
+
+sub import {
+    # Replace the regex if passed one.
+    Text::Markup->register( markdown => $_[1] ) if $_[1];
+}
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
@@ -68,6 +74,11 @@ It recognizes files with the following extensions as Markdown:
 =item F<.markdown>
 
 =back
+
+To change it the files it recognizes, load this module directly and pass a
+regular expression matching the desired extension(s), like so:
+
+  use Text::Markup::Markdown qr{markd?};
 
 Normally this module returns the output wrapped in a minimal HTML document
 skeleton. If you would like the raw output without the skeleton, you can pass

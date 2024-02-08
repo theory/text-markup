@@ -3,10 +3,16 @@ package Text::Markup::Textile;
 use 5.8.1;
 use strict;
 use warnings;
+use Text::Markup;
 use File::BOM qw(open_bom);
 use Text::Textile 2.10;
 
 our $VERSION = '0.32';
+
+sub import {
+    # Replace the regex if passed one.
+    Text::Markup->register( textile => $_[1] ) if $_[1];
+}
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
@@ -66,6 +72,11 @@ It recognizes files with the following extension as Textile:
 =item F<.textile>
 
 =back
+
+To change it the files it recognizes, load this module directly and pass a
+regular expression matching the desired extension(s), like so:
+
+  use Text::Markup::Textile qr{text(?:ile)?};
 
 Normally this module returns the output wrapped in a minimal HTML document
 skeleton. If you would like the raw output without the skeleton, you can pass
