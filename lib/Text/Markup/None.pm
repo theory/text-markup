@@ -7,7 +7,7 @@ use Text::Markup;
 use HTML::Entities;
 use File::BOM qw(open_bom);
 
-our $VERSION = '0.32';
+our $VERSION = '0.33';
 
 sub parser {
     my ($file, $encoding, $opts) = @_;
