@@ -1,6 +1,6 @@
 Revision history for Perl extension Text-Markup.
 
-0.33
+0.33  2024-02-15T20:12:54Z
     - Added support for registering a regular expression for Text::Markup::None
       by passing it in the `use` statement. The None parser otherwise is only
       the fallback parser used by `parse()` when Text::Markup cannot determine
