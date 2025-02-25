@@ -8,7 +8,7 @@ jobs:
           - { icon: 🐧, name: ubuntu  }
           - { icon: 🍎, name: macos   }
           - { icon: 🪟, name: windows }
-        perl: [ '5.38', '5.36', '5.34', '5.32', '5.30', '5.28', '5.26', '5.24', '5.22', '5.20', '5.18', '5.16', '5.14', '5.12', '5.10', '5.8' ]
+        perl: [ '5.40', '5.38', '5.36', '5.34', '5.32', '5.30', '5.28', '5.26', '5.24', '5.22', '5.20', '5.18', '5.16', '5.14', '5.12', '5.10', '5.8' ]
     name: 🐪 Perl ${{ matrix.perl }} on ${{ matrix.os.icon }}
     runs-on: ${{ matrix.os.name }}-latest
     steps:
@@ -47,7 +47,7 @@ jobs:
           sudo apt-get install libcmark-dev
           cpanm -v --notest --no-man-pages CommonMark
 
-      # Testing default implmementations, excluding AsciiDoctor and CommonMark.
+      # Testing default implementations, excluding AsciiDoctor and CommonMark.
       - name: Test
         env:
           AUTHOR_TESTING: 1

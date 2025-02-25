@@ -56,7 +56,7 @@ my $build = $class->new(
         'Text::WikiCreole'      => '0.07',
     },
     meta_merge => {
-         "meta-spec" => { version => 2 },
+        "meta-spec" => { version => 2 },
         resources => {
             homepage   => 'https://metacpan.org/pod/Text::Markup',
             bugtracker => 'https://github.com/theory/text-markup/issues/',
