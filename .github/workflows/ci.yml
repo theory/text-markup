@@ -60,9 +60,15 @@ jobs:
       #  Make sure we can build the distribution bundle.
       - name: Test Distro
         if: runner.os == 'Linux'
+        env:
+          AUTHOR_TESTING: 1
+          RELEASE_TESTING: 1
         run: |
-          prove -l xt
           perl Build.PL
           ./Build
+          ./Build distmeta
+          # cpanm --notest --installdeps --with-develop . # https://github.com/Perl-Toolchain-Gang/Module-Build/issues/45#issuecomment-2764694231
+          cpanm --notest Test::Pod Test::Pod::Coverage Test::Spelling
+          prove -l xt
           ./Build manifest
           ./Build disttest

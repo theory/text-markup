@@ -33,7 +33,7 @@ my $build = $class->new(
     license            => 'perl',
     create_makefile_pl => 'traditional',
     configure_requires => { 'Module::Build' => '0.4209' },
-    recommmends        => { 'CommonMark' => '0.290000' },
+    recommends         => { 'CommonMark' => '0.290000' },
     test_requires      => {
         'File::Spec::Functions' => 0,
         'Module::Build'         => '0.4209',

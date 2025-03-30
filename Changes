@@ -1,6 +1,8 @@
 Revision history for Perl extension Text-Markup.
 
 0.34
+   - Fixed typo in `Build.PL` that prevented the recommendation to install th
+     CommonMark module.
 
 0.33  2024-02-15T20:12:54Z
     - Added support for registering a regular expression for Text::Markup::None
