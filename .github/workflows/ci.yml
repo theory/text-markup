@@ -1,5 +1,9 @@
 name: ✅ CI
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 12 10 * *" # Monthly at noon on the tenth
 jobs:
   test:
     strategy:
@@ -18,7 +22,7 @@ jobs:
     name: 🐪 Perl ${{ matrix.perl }} on ${{ matrix.os.icon }}
     runs-on: ${{ matrix.os.name }}-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # gem install asciidoctor fails on Linux without this.
       - name: Setup Ruby

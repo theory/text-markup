@@ -7,7 +7,7 @@ Revision history for Perl extension Text-Markup.
      replaces the default flags.
 
 0.40 2025-12-15T00:10:26Z
-   - Fixed typo in `Build.PL` that prevented the recommendation to install th
+   - Fixed typo in `Build.PL` that prevented the recommendation to install the
      CommonMark module.
    - Replaced Text::Markdown with Text::Markdown::Discount, as it seems better
      maintained and supports tables, code fences, definition lists, and more.
