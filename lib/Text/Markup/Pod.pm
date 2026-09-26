@@ -22,6 +22,7 @@ sub parser {
     # Output everything as UTF-8.
     $p->html_header_tags('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />');
     $p->strip_verbatim_indent(sub { (sort map { /^(\s+)/ } @{$_[0]})[0] });
+    $p->html_encode_chars('&<>">');
     $p->output_string(\my $html);
     # Want user supplied options to override even these default behaviors,
     # if necessary

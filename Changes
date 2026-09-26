@@ -1,5 +1,10 @@
 Revision history for Perl extension Text-Markup.
 
+0.42
+   - Fixed over-aggressive HTML encoding from Pod files in more recent
+     releases of Pod::Simple::XHTML (#31).
+   - Ceased to encode single quotation marks (`'`) in HTML generated from Pod.
+
 0.41 2025-12-18T14:19:18Z
    - Tweaked the Markdown configuration to generate IDs for headers and to
      parse and emit footnotes and "smartypants" punctuation.
