@@ -32,6 +32,6 @@ jobs:
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v3
       with:
-        name: "Release ${{ github.ref }}"
-        body_path: latest-changes.md
+        name: "Release ${{ github.ref_name }}"
+        body_path: latest_changes.md
         files: ${{ steps.package.outputs.tarball }}
