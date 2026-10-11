@@ -125,10 +125,10 @@ done_testing;
 
 __DATA__
 # Name,Format,Format Module,Required Module,extensions
-markdown,markdown,Text::Markup::Markdown,Text::Markdown::Discount 0.13,md,mkdn,mkd,mdown,markdown
+markdown,markdown,Text::Markup::Markdown,Text::Markdown::Discount 0.17,md,mkdn,mkd,mdown,markdown
 commonmark,markdown,Text::Markup::CommonMark,CommonMark 0.290000,md,mkdn,mkd,mdown,markdown
 html,html,Text::Markup::HTML,,html,htm,xhtml,xhtm
-pod,pod,Text::Markup::Pod,Pod::Simple::XHTML 3.15,pod,pm,pl
+pod,pod,Text::Markup::Pod,Pod::Simple::XHTML 3.16,pod,pm,pl
 trac,trac,Text::Markup::Trac,Text::Trac 0.10,trac,trc
 textile,textile,Text::Markup::Textile,Text::Textile 2.10,textile
 mediawiki,mediawiki,Text::Markup::Mediawiki,Text::MediawikiFormat 1.0,wiki,mwiki,mediawiki
