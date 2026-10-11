@@ -2,7 +2,7 @@ Text/Markup
 ===========
 
 [![CPAN version](https://badge.fury.io/pl/Text-Markup.svg)](https://badge.fury.io/pl/Text-Markup)
-[![Build Status](https://github.com/theory/text-markup/workflows/CI/badge.svg)](https://github.com/theory/text-markup/actions/)
+[![Build Status](https://github.com/theory/text-markup/actions/workflows/ci.yml/badge.svg)](https://github.com/theory/text-markup/actions/)
 
 This library's module, Text::Markup, provides an single interface for parsing
 a large number of text markup formats and converting them to HTML. It
