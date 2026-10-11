@@ -25,17 +25,21 @@ Installation
 
 To install this module, type the following:
 
-    perl Build.PL
-    ./Build
-    ./Build test
-    ./Build install
+```sh
+perl Build.PL
+./Build
+./Build test
+./Build install
+```
 
 Or, if you don't have Module::Build installed, type the following:
 
-    perl Makefile.PL
-    make
-    make test
-    make install
+```sh
+perl Makefile.PL
+make
+make test
+make install
+```
 
 Dependencies
 ------------
