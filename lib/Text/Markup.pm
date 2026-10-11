@@ -328,6 +328,8 @@ C<Text::FooBar> module, it might look something like this:
       return unless $html =~ /\S/;
       utf8::encode($html);
       return join( "\n",
+          '<body>',
+          '<head>',
           '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />',
           '</head>',
           '<body>',
